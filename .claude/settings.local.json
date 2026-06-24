@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/seungminyoo/code/Port_2026 status)",
+      "Bash(git -C /Users/seungminyoo/code/Port_2026 log --oneline -5)"
+    ]
+  }
+}

@@ -51,11 +51,11 @@
     position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
     text-transform:uppercase;pointer-events:none;mix-blend-mode:multiply;
     color:#FE8B87;-webkit-text-stroke:5px #FE8B87;paint-order:stroke fill;
-    transform:translate(-4px,-5px) rotate(1.2deg);z-index:-1;opacity:.5;}
+    transform:translate(-2.5px,-3px) rotate(1deg);z-index:-1;opacity:.4;}
   /* colourless layer: hand-drawn black outline only, slightly offset so it overlaps */
   .masthead-name .nm-ol{position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
-    text-transform:uppercase;color:transparent;-webkit-text-stroke:1px rgba(26,21,18,.55);paint-order:stroke fill;
-    transform:translate(3px,3px) rotate(.5deg);z-index:2;pointer-events:none;}
+    text-transform:uppercase;color:transparent;-webkit-text-stroke:1.8px rgba(20,16,14,.8);paint-order:stroke fill;
+    transform:translate(2px,2px) rotate(.4deg);z-index:2;pointer-events:none;}
   /* keep faded opacity targets after animation */
   .masthead-eyebrow.anim{--o:.9;} .masthead-of.anim{--o:.55;}
   @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
@@ -82,10 +82,10 @@
   .right{position:relative;width:73%;height:100%;overflow:hidden;background:var(--ink);}
   .canvas-tex{position:absolute;inset:0;pointer-events:none;}
   /* 1) uneven fade — soft lighter/darker blotches */
-  .canvas-wall{position:absolute;inset:0;mix-blend-mode:screen;opacity:.16;background-size:cover;
+  .canvas-wall{position:absolute;inset:0;mix-blend-mode:screen;opacity:.1;background-size:cover;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='wll'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .006' numOctaves='3' seed='8'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='1' exponent='1.6' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23wll)'/%3E%3C/svg%3E");}
   /* 2) fine matte grain — light speckle on the dark wall */
-  .canvas-grain{position:absolute;inset:0;mix-blend-mode:screen;opacity:.2;background-size:170px 170px;
+  .canvas-grain{position:absolute;inset:0;mix-blend-mode:screen;opacity:.14;background-size:170px 170px;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='flm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' seed='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='170' height='170' filter='url(%23flm)'/%3E%3C/svg%3E");}
   /* 3) vignette removed — kept flat so the page-2 panel matches top AND bottom */
   .canvas-vignette{display:none;}
@@ -154,13 +154,18 @@
   .lets-go:hover::after,.lets-go:focus-visible::after{width:100%;}
 
   /* ---- SCREEN 02 — SELECTED WORKS (asymmetric magazine spread) ---- */
-  .works{width:100%;height:100%;position:relative;background:var(--cream);
-    padding:8vh 11vw 6vh 19vw;overflow:hidden;display:flex;flex-direction:column;}
+  .works{width:100%;height:100%;position:relative;background:var(--ink);
+    padding:8vh 13vw 6vh 21vw;overflow:hidden;display:flex;flex-direction:column;}
+  /* same painted-wall tone + grain as the cover's right panel */
+  .works::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;opacity:.1;background-size:cover;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='wll2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .006' numOctaves='3' seed='8'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='1' exponent='1.6' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23wll2)'/%3E%3C/svg%3E");}
+  .works::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;mix-blend-mode:screen;opacity:.14;background-size:170px 170px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='flm2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' seed='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='linear' slope='.62'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='170' height='170' filter='url(%23flm2)'/%3E%3C/svg%3E");}
 
   /* left CREAM panel: continues the cover's skyline so P.01 → P.02 feels like one scene */
   .p2left{position:absolute;left:0;top:0;bottom:0;width:14.7vw;z-index:1;
-    background:var(--ink);overflow:hidden;}
-  .p2left .paper2{position:absolute;inset:0;pointer-events:none;}
+    background:var(--cream);overflow:hidden;}
+  .p2left .paper2{display:none;}
   .p2left .paper2::before{content:"";position:absolute;inset:0;mix-blend-mode:screen;opacity:.16;background-size:cover;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='p2w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.004 .006' numOctaves='3' seed='8'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='gamma' amplitude='1' exponent='1.6' offset='0'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23p2w)'/%3E%3C/svg%3E");}
   .p2left .paper2::after{content:"";position:absolute;inset:0;mix-blend-mode:screen;opacity:.2;background-size:180px 180px;
@@ -169,34 +174,34 @@
     animation:p2drift 7s ease-in-out infinite alternate;}
   @keyframes p2drift{from{transform:translate(0,0);}to{transform:translate(-7px,-3px);}}
   .p2left .p2-label{position:absolute;left:0;right:0;top:7vh;text-align:center;z-index:3;
-    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.34em;color:rgba(240,231,214,.5);}
+    font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.34em;color:rgba(9,20,19,.5);}
 
-  .mag{flex:1;min-height:0;position:relative;display:grid;
+  .mag{flex:1;min-height:0;position:relative;z-index:1;display:grid;
     grid-template-columns:0.95fr repeat(20,1fr) 0.5fr;   /* wider script col | 20 photo cols | ws */
     grid-template-rows:1fr 1fr 0.62fr;
-    gap:2.2vh 1.8vw;}
+    gap:4.5vh 1.8vw;}
 
   /* vertical script title, far left (ref 'saturday morning') */
   .mag-script{grid-column:1;grid-row:1 / 4;writing-mode:vertical-rl;transform:rotate(180deg);
     font-family:'Playfair Display',serif;font-style:italic;font-weight:400;
-    font-size:clamp(44px,5.6vw,92px);line-height:1;color:var(--teal);
+    font-size:clamp(32px,4vw,64px);line-height:1;color:var(--teal);
     white-space:nowrap;justify-self:center;align-self:start;letter-spacing:.01em;}
-  .mag-script .hand{font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;color:var(--ink);
+  .mag-script .hand{font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;color:var(--cream);
     text-transform:uppercase;font-size:.8em;letter-spacing:.01em;}
   /* Selected — main teal + offset outline only */
   .mag-script .sel{position:relative;isolation:isolate;color:var(--teal);line-height:1.5;
     font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;text-transform:uppercase;
     -webkit-text-stroke:3.6px var(--teal);paint-order:stroke fill;}
   .mag-script .sel .sel-ol{position:absolute;inset:0;color:transparent;
-    -webkit-text-stroke:.8px rgba(26,21,18,.5);paint-order:stroke fill;
+    -webkit-text-stroke:.8px rgba(9,20,19,.85);paint-order:stroke fill;
     transform:translate(1px,1px);z-index:2;pointer-events:none;}
 
-  .card{position:relative;display:flex;flex-direction:column;text-decoration:none;color:var(--ink);cursor:pointer;min-height:0;}
+  .card{position:relative;display:flex;flex-direction:column;text-decoration:none;color:var(--cream);cursor:pointer;min-height:0;}
   .card.c01{grid-column:2 / 12;grid-row:1;}
   .card.c02{grid-column:12 / 22;grid-row:1;}
-  .mag-text{grid-column:2 / 12;grid-row:2;align-self:center;}
+  .mag-text{grid-column:2 / 12;grid-row:2;align-self:start;}
   .card.c03{grid-column:12 / 22;grid-row:2;}
-  .c04-group{grid-column:2 / 19;grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);gap:1.4vw;min-height:0;}
+  .c04-group{grid-column:2 / 22;grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);gap:1.9vw;min-height:0;}
   .card.mini{min-height:0;}
   .card.mini .cap .nm{font-size:clamp(13px,1.25vw,19px);}
   .card.mini .cap .rl{font-size:clamp(8px,.65vw,11px);}
@@ -204,12 +209,11 @@
   .card.mini .thumb{cursor:default;border-radius:12px;}
   .card.mini:hover .thumb{transform:none;}
   .card.mini:hover .thumb::after{display:none;}   /* non-interactive placeholders */
-  .mag-credit{grid-column:19 / 22;grid-row:3;position:relative;}  /* beside the mini row, ends at 02/03 line */
 
   /* one cell replaced by full text */
   .mag-text p{font-family:'Playfair Display',serif;font-weight:400;
-    font-size:clamp(12px,1vw,15px);line-height:1.55;color:rgba(9,20,19,.82);
-    text-align:justify;margin:0 0 1em;}
+    font-size:clamp(12px,1vw,15px);line-height:1.6;color:rgba(240,231,214,.82);
+    text-align:left;margin:0 0 1em;}
   .mag-text .mag-text-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;
     opacity:.95;text-align:left;color:var(--coral);}
 
@@ -219,12 +223,12 @@
   .thumb-svg{position:absolute;inset:0;width:100%;height:100%;}
   .thumb-no{position:absolute;top:8px;left:10px;font-size:10px;letter-spacing:.2em;color:var(--coral);font-weight:700;z-index:2;font-family:'Space Mono',monospace;}
   .card:hover .thumb::after{content:"COMING SOON";position:absolute;bottom:9px;left:10px;
-    font-size:8.5px;letter-spacing:.16em;color:rgba(9,20,19,.55);font-family:'Space Mono',monospace;}
+    font-size:8.5px;letter-spacing:.16em;color:rgba(240,231,214,.7);font-family:'Space Mono',monospace;}
   .card.has-pdf:hover .thumb::after{content:"OPEN CASE STUDY →";color:var(--vermilion);font-weight:700;}
   .cap{padding-top:.5em;display:flex;justify-content:space-between;align-items:baseline;gap:.8em;}
   /* ALL project titles share ONE font/style */
   .cap .nm{font-family:'Space Grotesk',sans-serif;font-style:normal;font-weight:600;
-    font-size:clamp(16px,1.7vw,26px);letter-spacing:-.01em;
+    font-size:clamp(14px,1.35vw,21px);letter-spacing:-.01em;
     color:inherit;text-decoration:none;display:inline-block;transition:color .2s,transform .2s;}
   a.nm{cursor:pointer;}
   a.nm:hover{color:var(--vermilion);transform:translateX(2px);}
@@ -236,7 +240,7 @@
 
   .card.big .cap .nm{font-size:clamp(22px,2.4vw,38px);}
 
-  .mag-vert{position:absolute;right:.6vw;top:50%;transform:translateY(-50%) rotate(180deg);color:var(--teal);
+  .mag-vert{position:absolute;right:5vw;top:50%;transform:translateY(-50%) rotate(180deg);color:var(--teal);
     writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.4em;opacity:.9;}
   .back{position:fixed;top:22px;left:22px;z-index:50;background:none;border:0;color:var(--coral);
     font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.28em;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -324,11 +328,12 @@
     .mag{display:flex;flex-direction:column;gap:7vw;}
     .mag-vert{display:none;}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
-      font-size:clamp(34px,11vw,58px);margin-bottom:1vh;}
+      font-size:clamp(28px,9vw,48px);margin-bottom:1vh;}
     .mag-text{order:9;}
     .card{min-height:46vh;} .thumb{min-height:32vh;}
     .cap .nm{font-size:clamp(20px,6vw,30px);}
     #sprite,#catchTip,.drag-hint{display:none!important;}   /* dust is a desktop-only interaction */
+    .lets-go{bottom:5vh;right:7vw;font-size:16px;z-index:40;}   /* same underline design as desktop */
   }
 </style>
 </head>
@@ -380,7 +385,7 @@
       <div class="p2left">
         <div class="paper2"></div>
         <svg class="p2sky" viewBox="0 0 200 120" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
-          <path fill="none" stroke="#F0E7D6" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".5" filter="url(#chalk)"
+          <path fill="none" stroke="#091413" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".5" filter="url(#chalk)"
             d="M0 100 C 20 78 38 78 56 98 C 74 116 84 60 104 82 C 120 100 140 70 160 90 C 176 106 190 92 200 96">
             <animate attributeName="d" dur="5.5s" repeatCount="indefinite"
               values="M0 100 C 20 78 38 78 56 98 C 74 116 84 60 104 82 C 120 100 140 70 160 90 C 176 106 190 92 200 96;
@@ -414,7 +419,8 @@
 
         <!-- ROW 2 : left = text (one cell replaced by full text), right = 03 -->
         <div class="mag-text">
-          <p>Design, for me, is the quiet engineering of trust — making complex systems feel inevitable, almost effortless. I move between the designer's eye and the engineer's hand: design systems at GitLab, product on AI platforms, tools that turn intent into interface.</p>
+          <p>Design, for me, is the quiet engineering of trust — making complex systems feel inevitable, almost effortless.</p>
+          <p>I move between the designer's eye and the engineer's hand: design systems at GitLab, product on AI platforms, tools that turn intent into interface.</p>
           <p class="mag-text-tag">— tap a cover to open the case study</p>
         </div>
         <div class="card c03" data-pdf="habble.pdf" data-img="habble-thumb.jpg" data-name="HABBLE" data-shape="habble">
@@ -437,9 +443,9 @@
             <div class="cap"><span class="nm">GitLab</span><span class="rl">DESIGN SYSTEMS</span></div>
           </div>
         </div>
-        <div class="mag-credit">
-          <div class="mag-vert">P.02 — VOL.01 · 2026</div>
-        </div>
+      </div>
+      <div class="mag-credit">
+        <div class="mag-vert">P.02 — VOL.01 · 2026</div>
       </div>
     </div>
   </section>
