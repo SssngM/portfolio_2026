@@ -320,11 +320,12 @@
     .masthead-name{writing-mode:horizontal-tb;text-orientation:mixed;transform:none;align-self:auto;
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
+    .folio{left:7vw;} .coverlines{margin-top:6vh;margin-bottom:4vh;}
     .title{top:7vh;font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
     #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
     .watermark{height:clamp(90px,16vh,160px);}
     /* page 2 stacks into a single readable column */
-    .works{padding:7vh 7vw;} .p2left{display:none;} .back{display:none;}
+    .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
     .mag{display:flex;flex-direction:column;gap:7vw;}
     .mag-vert{display:none;}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
@@ -333,8 +334,7 @@
     .card{min-height:46vh;} .thumb{min-height:32vh;}
     .cap .nm{font-size:clamp(20px,6vw,30px);}
     #sprite,#catchTip,.drag-hint{display:none!important;}   /* dust is a desktop-only interaction */
-    .lets-go{bottom:calc(9vh + env(safe-area-inset-bottom));right:7vw;font-size:17px;z-index:40;}
-    .lets-go::after{width:100%;}  /* no hover on touch */
+    .lets-go{display:none;}
   }
 </style>
 </head>
