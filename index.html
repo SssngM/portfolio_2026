@@ -54,7 +54,7 @@
     transform:translate(-2.5px,-3px) rotate(1deg);z-index:-1;opacity:.4;}
   /* colourless layer: hand-drawn black outline only, slightly offset so it overlaps */
   .masthead-name .nm-ol{position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
-    text-transform:uppercase;color:transparent;-webkit-text-stroke:1.8px rgba(20,16,14,.8);paint-order:stroke fill;
+    text-transform:uppercase;color:transparent;-webkit-text-stroke:1.1px rgba(20,16,14,.55);paint-order:stroke fill;
     transform:translate(2px,2px) rotate(.4deg);z-index:2;pointer-events:none;}
   /* keep faded opacity targets after animation */
   .masthead-eyebrow.anim{--o:.9;} .masthead-of.anim{--o:.55;}
@@ -205,11 +205,11 @@
   .mag-text{grid-column:2 / 12;grid-row:2;align-self:start;}
   .card.c03{grid-column:12 / 22;grid-row:2;}
   .c04-group{grid-column:2 / 22;grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);gap:1.9vw;min-height:0;}
-  .card.mini{min-height:0;}
+  .card.mini{min-height:0;min-width:0;}
   .card.mini .cap{min-height:3.3em;align-content:start;}
   .card.mini .cap .nm{font-size:clamp(13px,1.25vw,19px);}
   .card.mini .cap .rl{font-size:clamp(8px,.65vw,11px);white-space:nowrap;}
-  .card.mini .thumb-no{font-size:11px;}
+  .card.mini .thumb-no{display:none;}
   .card.mini .thumb{cursor:default;border-radius:12px;}
   .card.mini:hover .thumb{transform:none;}
   .card.mini:hover .thumb::after{display:none;}   /* non-interactive placeholders */
@@ -225,7 +225,7 @@
     border-radius:14px;overflow:hidden;transition:transform .3s,box-shadow .3s;}
   .card:hover .thumb{transform:translateY(-4px);}
   .thumb-svg{position:absolute;inset:0;width:100%;height:100%;}
-  .thumb-no{position:absolute;top:8px;left:10px;font-size:10px;letter-spacing:.2em;color:var(--coral);font-weight:700;z-index:2;font-family:'Space Mono',monospace;}
+  .thumb-no{position:absolute;top:8px;left:10px;font-size:10px;letter-spacing:.2em;color:var(--coral);font-weight:700;z-index:2;font-family:'Space Mono',monospace;text-shadow:0 1px 4px rgba(9,20,19,.55);}
   .card:hover .thumb::after{content:"COMING SOON";position:absolute;bottom:9px;left:10px;
     font-size:8.5px;letter-spacing:.16em;color:rgba(240,231,214,.7);font-family:'Space Mono',monospace;}
   .card.has-pdf:hover .thumb::after{content:"OPEN CASE STUDY →";color:var(--vermilion);font-weight:700;}
@@ -236,7 +236,7 @@
     color:inherit;text-decoration:none;display:inline-block;transition:color .2s,transform .2s;}
   a.nm{cursor:pointer;}
   a.nm:hover{color:var(--vermilion);transform:translateX(2px);}
-  a.nm::after{content:" ↗";font-size:.7em;opacity:.55;}
+  a.nm::after{content:" ↗\FE0E";font-size:.7em;opacity:.55;font-variant-emoji:text;}
   .cap .rl{font-family:'Space Mono',monospace;font-size:clamp(9px,.82vw,13px);letter-spacing:.08em;opacity:.62;text-align:right;line-height:1.45;}
 
   .mag-vert{position:absolute;right:0;bottom:0;writing-mode:vertical-rl;transform:rotate(180deg);
@@ -290,7 +290,7 @@
   .card.has-cover .thumb-img{display:block;}
   .thumb-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
   .card.has-video .thumb-svg{display:none;}
-  .card.has-cover .thumb-no{z-index:3;mix-blend-mode:difference;}
+  .card.has-cover .thumb-no{z-index:3;}
 
   /* hover bar: editor-only (hidden unless body.edit) */
   .thumb-bar{position:absolute;left:0;right:0;bottom:0;z-index:4;display:flex;gap:1px;
@@ -325,7 +325,7 @@
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
     .folio{left:7vw;} .coverlines{margin-top:6vh;margin-bottom:4vh;}
-    .title{top:7vh;font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
+    .title{top:50%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
     #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
     .watermark{height:clamp(90px,16vh,160px);}
     /* page 2 stacks into a single readable column */
