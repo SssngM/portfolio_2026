@@ -54,7 +54,7 @@
     transform:translate(-2.5px,-3px) rotate(1deg);z-index:-1;opacity:.4;}
   /* colourless layer: hand-drawn black outline only, slightly offset so it overlaps */
   .masthead-name .nm-ol{position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
-    text-transform:uppercase;color:transparent;-webkit-text-stroke:1.1px rgba(20,16,14,.55);paint-order:stroke fill;
+    text-transform:uppercase;color:transparent;-webkit-text-stroke:1.1px rgba(20,16,14,.70);paint-order:stroke fill;
     transform:translate(2px,2px) rotate(.4deg);z-index:2;pointer-events:none;}
   /* keep faded opacity targets after animation */
   .masthead-eyebrow.anim{--o:.9;} .masthead-of.anim{--o:.55;}
@@ -206,11 +206,11 @@
   .card.c03{grid-column:12 / 22;grid-row:2;}
   .c04-group{grid-column:2 / 22;grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);gap:1.9vw;min-height:0;}
   .card.mini{min-height:0;min-width:0;}
-  .card.mini .cap{min-height:3.3em;align-content:start;}
+  .card.mini .cap{min-height:3.3em;align-content:start;}   /* constant caption height → equal thumbs */
   .card.mini .cap .nm{font-size:clamp(13px,1.25vw,19px);}
   .card.mini .cap .rl{font-size:clamp(8px,.65vw,11px);white-space:nowrap;}
-  .card.mini .thumb-no{display:none;}
-  .card.mini .thumb{cursor:default;border-radius:12px;}
+  .card.mini .thumb-no{display:none;}   /* no 04-06 numbers on Playground minis */
+  .card.mini .thumb{cursor:default;border-radius:12px;}   /* equal-height thumbnails (square on mobile only) */
   .card.mini:hover .thumb{transform:none;}
   .card.mini:hover .thumb::after{display:none;}   /* non-interactive placeholders */
 
@@ -229,8 +229,8 @@
   .card:not(.mini) .thumb::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;
     background:rgba(9,20,19,.28);opacity:0;transition:opacity .3s ease;pointer-events:none;}
   .card:not(.mini) .thumb::before{content:"Case Study";position:absolute;top:50%;left:50%;
-    transform:translate(-50%,-50%);z-index:3;font-family:'Space Mono',monospace;font-size:13px;
-    letter-spacing:.14em;color:var(--coral);opacity:0;transition:opacity .3s ease;pointer-events:none;
+    transform:translate(-50%,-50%);z-index:3;font-family:'Space Mono',monospace;font-size:15px;
+    letter-spacing:.2em;color:var(--sage);opacity:0;transition:opacity .3s ease;pointer-events:none;
     text-shadow:0 1px 6px rgba(9,20,19,.5);}
   .card:not(.mini):hover .thumb::after,.card:not(.mini):hover .thumb::before{opacity:1;}
   .cap{padding-top:.5em;display:flex;justify-content:space-between;align-items:baseline;gap:.8em;}
@@ -305,6 +305,9 @@
     font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;padding:7px 4px;cursor:pointer;
     transition:background .2s,color .2s;}
   .thumb-bar button:hover{background:var(--acid);color:var(--ink);}
+  .card.has-pdf .thumb::before{content:"PDF";position:absolute;top:8px;right:10px;z-index:3;
+    font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--acid);opacity:0;}
+  body.edit .card.has-pdf .thumb::before{opacity:1;}
   .card.drop-hot .thumb{border-color:var(--acid);box-shadow:0 0 0 2px var(--acid) inset;}
 
   /* editor-only mode toggle (page 2 only) */
@@ -320,12 +323,13 @@
   @media (max-width:860px){
     html,body{overflow:visible;height:auto;}
     #deck{position:static;inset:auto;width:100vw;flex-direction:column;transform:none!important;}
-    .screen{height:auto;min-height:100vh;scroll-snap-align:start;} .spread{flex-direction:column;}
+    .screen{height:auto;min-height:100vh;} .spread{flex-direction:column;}
     .left,.right{width:100%;} .left{min-height:auto;padding:7vh 7vw 5vh;} .right{height:86vh;}
     .masthead-name{writing-mode:horizontal-tb;text-orientation:mixed;transform:none;align-self:auto;
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
-    .folio{left:7vw;} .coverlines{margin-top:6vh;margin-bottom:4vh;}
+    .coverlines{margin-top:6vh;margin-bottom:4vh;}   /* breathing room between name and the list */
+    .folio{left:7vw;}   /* align P.01 — COVER with the other left-edge text */
     .title{top:50%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
     #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
     .watermark{height:clamp(90px,16vh,160px);}
@@ -333,19 +337,20 @@
     .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
     .mag{display:flex;flex-direction:column;gap:11vw;}
     .card.mini{min-height:0;} .card.mini .thumb{min-height:0;aspect-ratio:1;}
-    .card.mini .cap .rl{white-space:normal;}
-    .card:not(.mini) .thumb::after{display:none;}
+    .card.mini .cap .rl{white-space:normal;}   /* wrap instead of overflowing the narrow column */
+    .card:not(.mini) .thumb::after{display:none;}   /* no hover overlay on touch */
     .card:not(.mini) .thumb::before{top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
-      font-size:8.5px;letter-spacing:.1em;color:rgba(240,231,214,.72);text-shadow:0 1px 4px rgba(9,20,19,.55);}
-    .c04-group{grid-column:auto;width:100%;gap:3vw;}
-    .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
+      font-size:8.5px;letter-spacing:.1em;color:#6B7270;text-shadow:none;}
+    .c04-group{grid-column:auto;width:100%;gap:3vw;}   /* 3 thumbs span full width, edges match the cards above */
+    .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;
+      transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
       font-size:clamp(28px,9vw,48px);margin-top:4vh;margin-bottom:2vh;}
     .mag-text{order:9;}
     .card{min-height:46vh;} .thumb{min-height:32vh;}
     .cap .nm{font-size:clamp(20px,6vw,30px);}
     #sprite,#catchTip,.drag-hint{display:none!important;}   /* dust is a desktop-only interaction */
-    .lets-go{display:none;}
+    .lets-go{display:none;}   /* mobile navigates by scroll; button hidden */
   }
 </style>
 </head>
@@ -446,7 +451,7 @@
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">04</span></div>
             <div class="cap"><span class="nm">Moorcolor</span><span class="rl">BRAND DESIGN</span></div>
           </div>
-          <div class="card mini" data-pdf="" data-img="group5-thumb.jpg" data-name="GROUP5" data-shape="habble">
+          <div class="card mini" data-pdf="" data-img="tgs-thumb.jpg" data-name="GROUP5" data-shape="habble">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">05</span></div>
             <div class="cap"><span class="nm">Group5</span><span class="rl">BRAND · UI</span></div>
           </div>
