@@ -203,8 +203,9 @@
   .card.c03{grid-column:12 / 22;grid-row:2;}
   .c04-group{grid-column:2 / 22;grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);gap:1.9vw;min-height:0;}
   .card.mini{min-height:0;}
+  .card.mini .cap{min-height:3.3em;align-content:start;}
   .card.mini .cap .nm{font-size:clamp(13px,1.25vw,19px);}
-  .card.mini .cap .rl{font-size:clamp(8px,.65vw,11px);}
+  .card.mini .cap .rl{font-size:clamp(8px,.65vw,11px);white-space:nowrap;}
   .card.mini .thumb-no{font-size:11px;}
   .card.mini .thumb{cursor:default;border-radius:12px;}
   .card.mini:hover .thumb{transform:none;}
@@ -432,13 +433,13 @@
 
         <!-- ROW 3 : three small projects (thumbnail-only) -->
         <div class="c04-group">
-          <div class="card mini" data-pdf="" data-img="group5-thumb.jpg" data-name="GROUP5" data-shape="play">
+          <div class="card mini" data-pdf="" data-img="moorcolor-thumb.jpg" data-name="MOORCOLOR" data-shape="play">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">04</span></div>
-            <div class="cap"><span class="nm">Group5</span><span class="rl">BRAND · UI</span></div>
+            <div class="cap"><span class="nm">Moorcolor</span><span class="rl">BRAND DESIGN</span></div>
           </div>
-          <div class="card mini" data-pdf="" data-img="tgs-thumb.jpg" data-name="TGS" data-shape="habble">
+          <div class="card mini" data-pdf="" data-img="tgs-thumb.jpg" data-name="GROUP5" data-shape="habble">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">05</span></div>
-            <div class="cap"><span class="nm">TGS</span><span class="rl">PRODUCT</span></div>
+            <div class="cap"><span class="nm">Group5</span><span class="rl">BRAND · UI</span></div>
           </div>
           <div class="card mini" data-pdf="" data-video="gitlab.mp4" data-name="GITLAB" data-shape="bench">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">06</span></div>
