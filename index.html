@@ -333,7 +333,7 @@
     .card{min-height:46vh;} .thumb{min-height:32vh;}
     .cap .nm{font-size:clamp(20px,6vw,30px);}
     #sprite,#catchTip,.drag-hint{display:none!important;}   /* dust is a desktop-only interaction */
-    .lets-go{bottom:5vh;right:7vw;font-size:17px;z-index:40;}
+    .lets-go{bottom:calc(9vh + env(safe-area-inset-bottom));right:7vw;font-size:17px;z-index:40;}
     .lets-go::after{width:100%;}  /* no hover on touch */
   }
 </style>
