@@ -115,7 +115,7 @@
   #deck.p2 .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   /* big background marquee — words drifting sideways, halftone dots, very faint */
   .watermark{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.12;
+    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.22;
     display:flex;align-items:center;
     transition:transform .85s cubic-bezier(.55,0,.2,1),opacity .7s ease;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
@@ -125,7 +125,10 @@
   .wm-track span{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     font-size:clamp(70px,18vh,180px);line-height:1;letter-spacing:.04em;padding-right:.16em;
     color:transparent;-webkit-background-clip:text;background-clip:text;
-    background-image:radial-gradient(circle, #2AA391 0 42%, transparent 46%);background-size:5px 5px;
+    background-color:#2AA391;
+    background-image:
+      repeating-linear-gradient(90deg, transparent 0 7px, rgba(9,20,19,.9) 7px 9px),
+      repeating-linear-gradient(0deg, transparent 0 7px, rgba(9,20,19,.9) 7px 9px);
     animation:htDrift 3.4s linear infinite;}
   @keyframes wmScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   .watermark text{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;}
