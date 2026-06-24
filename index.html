@@ -226,9 +226,13 @@
   .card:hover .thumb{transform:translateY(-4px);}
   .thumb-svg{position:absolute;inset:0;width:100%;height:100%;}
   .thumb-no{position:absolute;top:8px;left:10px;font-size:10px;letter-spacing:.2em;color:var(--coral);font-weight:700;z-index:2;font-family:'Space Mono',monospace;text-shadow:0 1px 4px rgba(9,20,19,.55);}
-  .card:hover .thumb::after{content:"COMING SOON";position:absolute;bottom:9px;left:10px;
-    font-size:8.5px;letter-spacing:.16em;color:rgba(240,231,214,.7);font-family:'Space Mono',monospace;}
-  .card.has-pdf:hover .thumb::after{content:"OPEN CASE STUDY →";color:var(--vermilion);font-weight:700;}
+  .card:not(.mini) .thumb::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;
+    background:rgba(9,20,19,.28);opacity:0;transition:opacity .3s ease;pointer-events:none;}
+  .card:not(.mini) .thumb::before{content:"Case Study";position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);z-index:3;font-family:'Space Mono',monospace;font-size:13px;
+    letter-spacing:.14em;color:var(--coral);opacity:0;transition:opacity .3s ease;pointer-events:none;
+    text-shadow:0 1px 6px rgba(9,20,19,.5);}
+  .card:not(.mini):hover .thumb::after,.card:not(.mini):hover .thumb::before{opacity:1;}
   .cap{padding-top:.5em;display:flex;justify-content:space-between;align-items:baseline;gap:.8em;}
   /* ALL project titles share ONE font/style */
   .cap .nm{font-family:'Space Grotesk',sans-serif;font-style:normal;font-weight:600;
@@ -301,9 +305,6 @@
     font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;padding:7px 4px;cursor:pointer;
     transition:background .2s,color .2s;}
   .thumb-bar button:hover{background:var(--acid);color:var(--ink);}
-  .card.has-pdf .thumb::before{content:"PDF";position:absolute;top:8px;right:10px;z-index:3;
-    font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--acid);opacity:0;}
-  body.edit .card.has-pdf .thumb::before{opacity:1;}
   .card.drop-hot .thumb{border-color:var(--acid);box-shadow:0 0 0 2px var(--acid) inset;}
 
   /* editor-only mode toggle (page 2 only) */
@@ -333,6 +334,9 @@
     .mag{display:flex;flex-direction:column;gap:11vw;}
     .card.mini{min-height:0;} .card.mini .thumb{min-height:0;aspect-ratio:1;}
     .card.mini .cap .rl{white-space:normal;}
+    .card:not(.mini) .thumb::after{display:none;}
+    .card:not(.mini) .thumb::before{top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
+      font-size:8.5px;letter-spacing:.1em;color:rgba(240,231,214,.72);text-shadow:0 1px 4px rgba(9,20,19,.55);}
     .c04-group{grid-column:auto;width:100%;gap:3vw;}
     .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
