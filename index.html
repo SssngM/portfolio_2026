@@ -229,9 +229,9 @@
   .card:not(.mini) .thumb::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;
     background:rgba(9,20,19,.28);opacity:0;transition:opacity .3s ease;pointer-events:none;}
   .card:not(.mini) .thumb::before{content:"Case Study";position:absolute;top:50%;left:50%;
-    transform:translate(-50%,-50%);z-index:3;font-family:'Space Mono',monospace;font-size:15px;
+    transform:translate(-50%,-50%);z-index:3;font-family:'Space Mono',monospace;font-size:18px;font-weight:700;
     letter-spacing:.2em;color:var(--sage);opacity:0;transition:opacity .3s ease;pointer-events:none;
-    text-shadow:0 1px 6px rgba(9,20,19,.5);}
+    text-shadow:none;}
   .card:not(.mini):hover .thumb::after,.card:not(.mini):hover .thumb::before{opacity:1;}
   .cap{padding-top:.5em;display:flex;justify-content:space-between;align-items:baseline;gap:.8em;}
   /* ALL project titles share ONE font/style */
@@ -305,9 +305,6 @@
     font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.16em;padding:7px 4px;cursor:pointer;
     transition:background .2s,color .2s;}
   .thumb-bar button:hover{background:var(--acid);color:var(--ink);}
-  .card.has-pdf .thumb::before{content:"PDF";position:absolute;top:8px;right:10px;z-index:3;
-    font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:var(--acid);opacity:0;}
-  body.edit .card.has-pdf .thumb::before{opacity:1;}
   .card.drop-hot .thumb{border-color:var(--acid);box-shadow:0 0 0 2px var(--acid) inset;}
 
   /* editor-only mode toggle (page 2 only) */
@@ -340,7 +337,7 @@
     .card.mini .cap .rl{white-space:normal;}   /* wrap instead of overflowing the narrow column */
     .card:not(.mini) .thumb::after{display:none;}   /* no hover overlay on touch */
     .card:not(.mini) .thumb::before{top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
-      font-size:8.5px;letter-spacing:.1em;color:#6B7270;text-shadow:none;}
+      font-size:8.5px;font-weight:400;letter-spacing:.1em;color:#6B7270;text-shadow:none;}
     .c04-group{grid-column:auto;width:100%;gap:3vw;}   /* 3 thumbs span full width, edges match the cards above */
     .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;
       transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
