@@ -326,8 +326,9 @@
     .watermark{height:clamp(90px,16vh,160px);}
     /* page 2 stacks into a single readable column */
     .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
-    .mag{display:flex;flex-direction:column;gap:7vw;}
-    .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;transform:none;text-align:center;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
+    .mag{display:flex;flex-direction:column;gap:11vw;}
+    .card.mini{min-height:0;} .card.mini .thumb{min-height:0;aspect-ratio:1;}
+    .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
       font-size:clamp(28px,9vw,48px);margin-bottom:1vh;}
     .mag-text{order:9;}
