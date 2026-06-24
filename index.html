@@ -313,9 +313,10 @@
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}
     .anim,.coverlines .row{opacity:1!important;transform:none!important;}}
   @media (max-width:860px){
-    html,body{overflow:auto;height:auto;}
+    html{overflow:auto;height:auto;scroll-snap-type:y mandatory;}
+    body{overflow:auto;height:auto;}
     #deck{position:static;inset:auto;width:100vw;flex-direction:column;transform:none!important;}
-    .screen{height:auto;min-height:100vh;} .spread{flex-direction:column;}
+    .screen{height:auto;min-height:100vh;scroll-snap-align:start;} .spread{flex-direction:column;}
     .left,.right{width:100%;} .left{min-height:auto;padding:7vh 7vw 5vh;} .right{height:86vh;}
     .masthead-name{writing-mode:horizontal-tb;text-orientation:mixed;transform:none;align-self:auto;
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
@@ -327,7 +328,7 @@
     /* page 2 stacks into a single readable column */
     .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
     .mag{display:flex;flex-direction:column;gap:7vw;}
-    .mag-vert{display:none;}
+    .mag-vert{display:block;position:static;writing-mode:horizontal-tb;transform:none;text-align:right;margin-top:5vh;}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
       font-size:clamp(28px,9vw,48px);margin-bottom:1vh;}
     .mag-text{order:9;}
