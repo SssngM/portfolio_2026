@@ -51,7 +51,7 @@
     position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
     text-transform:uppercase;pointer-events:none;mix-blend-mode:multiply;
     color:#FE8B87;-webkit-text-stroke:5px #FE8B87;paint-order:stroke fill;
-    transform:translate(-2.5px,-3px) rotate(1deg);z-index:-1;opacity:.4;}
+    transform:translate(-6.5px,-9px) rotate(1deg);z-index:-1;opacity:.4;}
   /* colourless layer: hand-drawn black outline only, slightly offset so it overlaps */
   .masthead-name .nm-ol{position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
     text-transform:uppercase;color:transparent;-webkit-text-stroke:1.1px rgba(20,16,14,.70);paint-order:stroke fill;
@@ -70,7 +70,7 @@
   .coverlines .row:nth-child(4){animation-delay:1.15s;}
   .coverlines .row:last-child{border-bottom:1px solid rgba(254,139,135,.85);}
 
-  .barcode-wrap{display:flex;flex-direction:column;gap:8px;animation-delay:1.3s;}
+  .barcode-wrap{display:flex;flex-direction:column;gap:8px;animation-delay:1.3s;margin-bottom:5vh;}
   .barcode{height:30px;width:120px;opacity:1;
     background:repeating-linear-gradient(90deg,
       rgba(254,139,135,.95) 0 1.5px, transparent 1.5px 3.5px, rgba(254,139,135,.95) 3.5px 5px,
@@ -224,7 +224,7 @@
     border-radius:14px;overflow:hidden;transition:transform .3s,box-shadow .3s;}
   .card:hover .thumb{transform:translateY(-4px);}
   .thumb-svg{position:absolute;inset:0;width:100%;height:100%;}
-  .thumb-no{position:absolute;top:8px;left:10px;font-size:10px;letter-spacing:.2em;color:var(--coral);font-weight:700;z-index:2;font-family:'Space Mono',monospace;text-shadow:0 1px 4px rgba(9,20,19,.55);}
+  .thumb-no{position:absolute;top:8px;left:10px;font-size:10px;letter-spacing:.2em;color:var(--coral);font-weight:700;z-index:2;font-family:'Space Mono',monospace;text-shadow:none;}
   .card:not(.mini) .thumb::after{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;
     background:rgba(9,20,19,.28);opacity:0;transition:opacity .3s ease;pointer-events:none;}
   .card:not(.mini) .thumb::before{content:"Case Study";position:absolute;top:50%;left:50%;
@@ -1178,14 +1178,15 @@ function meltLetter(el,x,y){
   if(!best || meltingCh.has(best) || bd>22) return;
   meltingCh.add(best);
   best.style.transition='transform .6s cubic-bezier(.5,1.4,.5,1), filter .6s ease';
-  best.style.filter='url(#goo)';
   // the masthead name is rotated 180deg (vertical), so flip the drip to still flow DOWN on screen
   const rotated = best.closest && best.closest('.masthead-name');
   if(rotated){
+    best.style.filter='url(#goo)';                        // goo reads well on the large name letters
     best.style.transformOrigin='50% 100%';               // local-bottom = screen-top after 180° → grows downward
     best.style.transform='translateY(-12px) scaleY(1.85) scaleX(.9)';
   } else {
-    best.style.transform='translateY(5px) scaleY(1.34) scaleX(.93)';   // gentle squish, no big drop
+    best.style.filter='url(#goo-soft)';                   // softer goo: ink still drips, thin glyphs don't vanish
+    best.style.transform='translateY(5px) scaleY(1.34) scaleX(.93)';
   }
   setTimeout(()=>{
     best.style.transform=''; best.style.filter=''; best.style.transformOrigin='';
@@ -1202,6 +1203,12 @@ gdefs.innerHTML=`<defs>
     <feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -7" result="g"/>
     <feTurbulence type="fractalNoise" baseFrequency="0.02 0.07" numOctaves="2" seed="5" result="n"/>
     <feDisplacementMap in="g" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="goo-soft">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="0.7" result="b"/>
+    <feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 6 -2" result="g"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.02 0.07" numOctaves="2" seed="5" result="n"/>
+    <feDisplacementMap in="g" in2="n" scale="3" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
 </defs>`;
 document.body.appendChild(gdefs);
