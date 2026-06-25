@@ -114,7 +114,7 @@
   #deck.half .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   #deck.p2 .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   /* big background marquee — words drifting sideways, halftone dots, very faint */
-  .watermark{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+  .watermark{position:absolute;left:0;right:0;top:44%;transform:translateY(-50%);
     width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.24;
     display:flex;align-items:center;
     transition:transform .85s cubic-bezier(.55,0,.2,1),opacity .7s ease;
@@ -249,6 +249,7 @@
 
   .mag-vert{position:absolute;right:8.5vw;bottom:7vh;top:auto;transform:rotate(180deg);z-index:2;color:var(--teal);
     writing-mode:vertical-rl;text-orientation:mixed;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.4em;line-height:2.4;opacity:.9;text-align:left;}
+  .mag-vert b{display:block;font-weight:400;}
   .back{position:fixed;top:22px;left:22px;z-index:50;background:none;border:0;color:var(--coral);
     font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.28em;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;}
   #deck.p2 ~ .back{opacity:.95;pointer-events:auto;}
@@ -328,7 +329,7 @@
     .folio{left:7vw;bottom:22px;}   /* align P.01 — COVER with the other left-edge text; keep mobile position */
     .title{top:50%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
     #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
-    .watermark{height:clamp(90px,16vh,160px);}
+    .watermark{height:clamp(90px,16vh,160px);top:50%;}
     /* page 2 stacks into a single readable column */
     .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
     .mag{display:flex;flex-direction:column;gap:11vw;}
@@ -338,8 +339,11 @@
     .card:not(.mini) .thumb::before{top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
       font-size:8.5px;font-weight:400;letter-spacing:.1em;color:#6B7270;text-shadow:none;}
     .c04-group{grid-column:auto;width:100%;gap:3vw;}   /* 3 thumbs span full width, edges match the cards above */
-    .mag-vert{display:block;position:static;right:auto;top:auto;writing-mode:horizontal-tb;
+    .mag-vert{display:block;position:static;right:auto;top:auto;bottom:auto;writing-mode:horizontal-tb;
       transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
+    .mag-vert b{display:inline;}
+    .mag-vert b:nth-child(2)::before{content:" — ";}
+    .mag-vert b:nth-child(3)::before{content:" · ";}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
       font-size:clamp(28px,9vw,48px);margin-top:4vh;margin-bottom:2vh;}
     .mag-text{order:9;}
@@ -458,7 +462,7 @@
         </div>
       </div>
       <div class="mag-credit">
-        <div class="mag-vert">P.02<br>VOL.01<br>2026</div>
+        <div class="mag-vert"><b>P.02</b><b>VOL.01</b><b>2026</b></div>
       </div>
     </div>
   </section>
