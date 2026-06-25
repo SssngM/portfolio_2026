@@ -52,6 +52,9 @@
     text-transform:uppercase;pointer-events:none;mix-blend-mode:multiply;
     color:#FE8B87;-webkit-text-stroke:5px #FE8B87;paint-order:stroke fill;
     transform:translate(-6.5px,-9px) rotate(1deg);z-index:-1;opacity:.4;}
+  .masthead-name.overprint{opacity:0;}   /* hidden until the entrance script reveals it (no flash) */
+  .masthead-name.ink-in::after{opacity:0;}   /* coral starts absent, washes in on load */
+  .masthead-name.coral-anim::after{transition:opacity .7s ease;}   /* fade enabled only at entrance (no load flash) */
   /* colourless layer: hand-drawn black outline only, slightly offset so it overlaps */
   .masthead-name .nm-ol{position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
     text-transform:uppercase;color:transparent;-webkit-text-stroke:1.1px rgba(20,16,14,.70);paint-order:stroke fill;
@@ -1212,6 +1215,31 @@ gdefs.innerHTML=`<defs>
   </filter>
 </defs>`;
 document.body.appendChild(gdefs);
+/* entrance: eyebrow + "of" land first, THEN teal letters rise one by one, outline a beat behind */
+(function(){
+  const nm=document.querySelector('.masthead-name.overprint');
+  if(!nm) return;
+  const ol=nm.querySelector('.nm-ol');
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){ nm.style.opacity='1'; return; }
+  const mainChs=[...nm.querySelectorAll(':scope > span:not(.nm-ol)')];
+  const olChs = ol ? [...ol.querySelectorAll('span')] : [];
+  // hide letters with NO transition yet (so there's no 1->0 fade on first paint)
+  mainChs.forEach(s=>{ s.style.opacity='0'; });
+  olChs.forEach(s=>{ s.style.opacity='0'; s.style.filter='blur(1px)'; });
+  if(ol) ol.style.opacity='1';
+  nm.classList.add('ink-in');   // coral hidden until the name begins
+  nm.style.opacity='1';          // container visible; individual letters still opacity 0
+  void nm.offsetWidth;           // commit the hidden state before any transitions
+  const STEP=150, LEAD=320, START=400;   // begins while eyebrow/"of" are still settling
+  setTimeout(()=>{
+    nm.classList.add('coral-anim');  // enable the coral fade now (not on load)
+    nm.classList.remove('ink-in');   // coral blob washes in as the name starts
+    mainChs.forEach((s,i)=> setTimeout(()=>{ s.style.transition='opacity .6s ease'; s.style.opacity='1'; }, i*STEP));
+    olChs.forEach((s,i)=> setTimeout(()=>{ s.style.transition='opacity .4s ease, filter .4s ease'; s.style.opacity='1'; s.style.filter='none'; }, LEAD + i*STEP));
+    const total = LEAD + 600 + Math.max(mainChs.length,olChs.length)*STEP;
+    setTimeout(()=>{ mainChs.forEach(s=>s.style.transition=''); olChs.forEach(s=>{ s.style.transition=''; s.style.filter=''; }); }, total);
+  }, START);
+})();
 
 /* ===== COVER AMBIENCE: typewriter title, floating particles, parallax + spotlight ===== */
 (function(){
