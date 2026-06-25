@@ -235,13 +235,14 @@
     letter-spacing:.2em;color:var(--cream);opacity:0;transition:opacity .3s ease;pointer-events:none;
     white-space:nowrap;text-shadow:none;}
   .card:not(.mini):hover .thumb::after,.card:not(.mini):hover .thumb::before{opacity:1;}
+  .card.c02 .thumb::after,.card.c02 .thumb::before{display:none!important;}   /* Qovai has no case study — site link lives in the caption */
   .cap{padding-top:.5em;display:flex;justify-content:space-between;align-items:baseline;gap:.8em;}
   /* ALL project titles share ONE font/style */
   .cap .nm{font-family:'Space Grotesk',sans-serif;font-style:normal;font-weight:600;
     font-size:clamp(14px,1.35vw,21px);letter-spacing:-.01em;
     color:inherit;text-decoration:none;display:inline-block;transition:color .2s,transform .2s;}
   a.nm{cursor:pointer;}
-  a.nm:hover{color:var(--vermilion);transform:translateX(2px);}
+  a.nm:hover{color:var(--coral);transform:translateX(2px);}
   a.nm::after{content:" ↗\FE0E";font-size:.7em;opacity:.55;font-variant-emoji:text;}
   .cap .rl{font-family:'Space Mono',monospace;font-size:clamp(9px,.82vw,13px);letter-spacing:.08em;opacity:.62;text-align:right;line-height:1.45;}
 
