@@ -214,8 +214,8 @@
   .card.mini:hover .thumb::after{display:none;}   /* non-interactive placeholders */
 
   /* one cell replaced by full text */
-  .mag-text p{font-family:'Playfair Display',serif;font-weight:400;
-    font-size:clamp(12px,1vw,15px);line-height:1.6;color:rgba(240,231,214,.82);
+  .mag-text p{font-family:'Space Mono',monospace;font-weight:400;
+    font-size:clamp(10px,.82vw,13px);line-height:1.7;color:rgba(240,231,214,.82);
     text-align:left;margin:0 0 1em;}
   .mag-text .mag-text-tag{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;
     opacity:.95;text-align:left;color:var(--coral);}
@@ -260,9 +260,9 @@
   #sprite.dragging{cursor:grabbing;transition:none;}
   /* little "grab me" tag that follows the dust, until first grab */
   #catchTip{position:fixed;z-index:96;pointer-events:none;white-space:nowrap;
-    font-family:'Caveat',cursive;font-size:27px;font-weight:700;letter-spacing:.02em;line-height:1;
+    font-family:'Caveat',cursive;font-size:20px;font-weight:700;letter-spacing:.02em;line-height:1;
     color:var(--ink);background:rgba(242,235,221,.8);border:1px solid rgba(9,20,19,.16);
-    padding:5px 14px 7px;border-radius:50% / 60%;opacity:0;transition:opacity .4s ease;
+    padding:4px 11px 5px;border-radius:50% / 60%;opacity:0;transition:opacity .4s ease;
     transform:translate(-50%,0) rotate(-3deg);box-shadow:1px 1.5px 0 rgba(9,20,19,.12);}
   /* little round tail under the bubble (points down to the dust) */
   #catchTip::after{content:"";position:absolute;left:50%;bottom:-8px;width:8px;height:8px;
@@ -466,7 +466,7 @@
 
 <button class="back" id="backBtn">← P.01 COVER</button>
 <svg id="sprite" viewBox="0 0 50 50"></svg>
-<div id="catchTip">Oi! Drop me?!</div>
+<div id="catchTip">Drop me?!</div>
 
 <!-- inline PDF viewer (opens over the page; no new tab) -->
 <div id="pdfView" class="pdf-view">
