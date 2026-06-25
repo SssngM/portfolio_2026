@@ -115,25 +115,21 @@
   #deck.p2 .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   /* big background marquee — words drifting sideways, halftone dots, very faint */
   .watermark{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.2;
+    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.3;
     display:flex;align-items:center;
     transition:transform .85s cubic-bezier(.55,0,.2,1),opacity .7s ease;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
-            mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);}
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);}
   .wm-track{display:flex;flex:none;white-space:nowrap;will-change:transform;
     animation:wmScroll 150s linear infinite;}
   .wm-track span{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     font-size:clamp(70px,18vh,180px);line-height:1;letter-spacing:.04em;padding-right:.16em;
     color:transparent;-webkit-background-clip:text;background-clip:text;
     background-image:radial-gradient(circle, rgba(42,163,145,.6) 0 42%, transparent 46%);background-size:5px 5px;
-    filter:drop-shadow(0 0 7px rgba(42,163,145,.9)) drop-shadow(0 0 16px rgba(42,163,145,.5));
+    filter:drop-shadow(-2.5px 0 0 rgba(255,0,90,.5)) drop-shadow(2.5px 0 0 rgba(0,190,255,.5))
+           drop-shadow(0 0 9px rgba(42,163,145,.95)) drop-shadow(0 0 24px rgba(42,163,145,.65));
     animation:htDrift 3.4s linear infinite;}
   @keyframes wmScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
-  .watermark::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-    background:linear-gradient(105deg,transparent 43%,rgba(150,255,215,.6) 50%,transparent 57%);
-    background-size:220% 100%;background-position:-110% 0;mix-blend-mode:screen;
-    animation:wmSweep 5s linear infinite;}
-  @keyframes wmSweep{to{background-position:210% 0;}}
   .watermark text{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;}
   /* same exit as the title: swell from centre + dissolve, already gone by the first scroll */
   #deck.half .watermark{transform:translateY(-50%) scale(2.6);opacity:0;}
