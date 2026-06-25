@@ -115,7 +115,7 @@
   #deck.p2 .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   /* big background marquee — words drifting sideways, halftone dots, very faint */
   .watermark{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.3;
+    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.24;
     display:flex;align-items:center;
     transition:transform .85s cubic-bezier(.55,0,.2,1),opacity .7s ease;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
@@ -230,7 +230,7 @@
   .card:not(.mini) .thumb::before{content:"Case Study";position:absolute;top:50%;left:50%;
     transform:translate(-50%,-50%);z-index:3;font-family:'Space Mono',monospace;font-size:32px;font-weight:700;
     letter-spacing:.2em;color:var(--cream);opacity:0;transition:opacity .3s ease;pointer-events:none;
-    text-shadow:none;}
+    white-space:nowrap;text-shadow:none;}
   .card:not(.mini):hover .thumb::after,.card:not(.mini):hover .thumb::before{opacity:1;}
   .cap{padding-top:.5em;display:flex;justify-content:space-between;align-items:baseline;gap:.8em;}
   /* ALL project titles share ONE font/style */
@@ -260,9 +260,9 @@
   #sprite.dragging{cursor:grabbing;transition:none;}
   /* little "grab me" tag that follows the dust, until first grab */
   #catchTip{position:fixed;z-index:96;pointer-events:none;white-space:nowrap;
-    font-family:'Caveat',cursive;font-size:20px;font-weight:700;letter-spacing:.02em;line-height:1;
+    font-family:'Caveat',cursive;font-size:27px;font-weight:700;letter-spacing:.02em;line-height:1;
     color:var(--ink);background:rgba(242,235,221,.8);border:1px solid rgba(9,20,19,.16);
-    padding:4px 11px 5px;border-radius:50% / 60%;opacity:0;transition:opacity .4s ease;
+    padding:5px 14px 7px;border-radius:50% / 60%;opacity:0;transition:opacity .4s ease;
     transform:translate(-50%,0) rotate(-3deg);box-shadow:1px 1.5px 0 rgba(9,20,19,.12);}
   /* little round tail under the bubble (points down to the dust) */
   #catchTip::after{content:"";position:absolute;left:50%;bottom:-8px;width:8px;height:8px;
