@@ -1297,7 +1297,7 @@ document.body.appendChild(gdefs);
           ctx.moveTo(p.x-rl,p.y); ctx.lineTo(p.x+rl,p.y);
           ctx.moveTo(p.x,p.y-rl); ctx.lineTo(p.x,p.y+rl); ctx.stroke();
         }
-      } else if(Math.random()<0.00028){ p.spark=true; p.sp=0; }
+      } else if(Math.random()<0.0006){ p.spark=true; p.sp=0; }
       ctx.shadowBlur=(11+coreR*6.5)*p.g;          // large soft halo -> distant-star glow
       ctx.shadowColor='rgba(178,240,230,'+Math.min(1,a).toFixed(3)+')';
       ctx.beginPath(); ctx.arc(p.x,p.y,coreR,0,7);
@@ -1323,7 +1323,6 @@ document.body.appendChild(gdefs);
   (function ease(){
     cx+=(tx-cx)*0.08; cy+=(ty-cy)*0.08;
     if(sky)  sky.style.transform = `translate(${(-cx*16).toFixed(2)}px,${(-cy*11).toFixed(2)}px) scale(1.06)`;
-    if(cv)   cv.style.transform  = `translate(${(-cx*30).toFixed(2)}px,${(-cy*22).toFixed(2)}px)`;
     requestAnimationFrame(ease);
   })();
 })();
