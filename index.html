@@ -76,7 +76,7 @@
       rgba(254,139,135,.95) 0 1.5px, transparent 1.5px 3.5px, rgba(254,139,135,.95) 3.5px 5px,
       transparent 5px 8px, rgba(254,139,135,.95) 8px 10px, transparent 10px 12px);}
   .barcode-num{font-size:10px;letter-spacing:.3em;opacity:.32;}
-  .folio{position:absolute;bottom:22px;left:2.4vw;font-size:11px;letter-spacing:.36em;opacity:.5;white-space:nowrap;}
+  .folio{position:absolute;bottom:42px;left:2.4vw;font-size:11px;letter-spacing:.36em;opacity:.5;white-space:nowrap;}
 
   /* ---- RIGHT PAGE — black wall surface ---- */
   .right{position:relative;width:73%;height:100%;overflow:hidden;background:var(--ink);}
@@ -115,7 +115,7 @@
   #deck.p2 .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   /* big background marquee — words drifting sideways, halftone dots, very faint */
   .watermark{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.22;
+    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.15;
     display:flex;align-items:center;
     transition:transform .85s cubic-bezier(.55,0,.2,1),opacity .7s ease;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
@@ -125,10 +125,8 @@
   .wm-track span{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;
     font-size:clamp(70px,18vh,180px);line-height:1;letter-spacing:.04em;padding-right:.16em;
     color:transparent;-webkit-background-clip:text;background-clip:text;
-    background-color:#2AA391;
-    background-image:
-      repeating-linear-gradient(90deg, transparent 0 7px, rgba(9,20,19,.9) 7px 9px),
-      repeating-linear-gradient(0deg, transparent 0 7px, rgba(9,20,19,.9) 7px 9px);
+    background-image:radial-gradient(circle, #2AA391 0 42%, transparent 46%);background-size:5px 5px;
+    filter:drop-shadow(0 0 6px rgba(42,163,145,.55)) drop-shadow(0 0 14px rgba(42,163,145,.3));
     animation:htDrift 3.4s linear infinite;}
   @keyframes wmScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   .watermark text{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;}
@@ -248,7 +246,7 @@
 
   .card.big .cap .nm{font-size:clamp(22px,2.4vw,38px);}
 
-  .mag-vert{position:absolute;right:5vw;top:50%;transform:translateY(-50%) rotate(180deg);color:var(--teal);
+  .mag-vert{position:absolute;right:5vw;top:72%;transform:translateY(-50%) rotate(180deg);color:var(--teal);
     writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.4em;opacity:.9;}
   .back{position:fixed;top:22px;left:22px;z-index:50;background:none;border:0;color:var(--coral);
     font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.28em;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .3s;}
@@ -326,7 +324,7 @@
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
     .coverlines{margin-top:6vh;margin-bottom:4vh;}   /* breathing room between name and the list */
-    .folio{left:7vw;}   /* align P.01 — COVER with the other left-edge text */
+    .folio{left:7vw;bottom:22px;}   /* align P.01 — COVER with the other left-edge text; keep mobile position */
     .title{top:50%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
     #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
     .watermark{height:clamp(90px,16vh,160px);}
