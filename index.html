@@ -324,17 +324,17 @@
   @media (max-width:860px){
     html,body{overflow:visible;height:auto;}
     #deck{position:static;inset:auto;width:100vw;flex-direction:column;transform:none!important;}
-    .screen{height:auto;min-height:100vh;} .spread{flex-direction:column;}
-    .left,.right{width:100%;} .left{min-height:auto;padding:7vh 7vw 5vh;} .right{height:86vh;}
+    .screen{height:auto;min-height:100vh;flex:0 0 auto;} .spread{flex-direction:column;}   /* release fixed flex size so the section grows instead of clipping */
+    .left,.right{width:100%;} .left{min-height:auto;padding:7vh 7vw 5vh;} .right{height:85vh;}   /* black watermark section (shorter) */
     .masthead-name{writing-mode:horizontal-tb;text-orientation:mixed;transform:none;align-self:auto;
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
     .coverlines{margin-top:6vh;margin-bottom:4vh;}   /* breathing room between name and the list */
     .folio{left:7vw;bottom:22px;}   /* align P.01 — COVER with the other left-edge text; keep mobile position */
-    .title{top:64%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
-    #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
+    .title{top:75%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}   /* below the skyline */
+    #skyline{top:10%;bottom:30%;height:auto;}   /* lowered 5%; black below for the title */
     .spotlight{display:none;}   /* no mouse on mobile → drop the cursor spotlight */
-    .watermark{height:clamp(90px,16vh,160px);top:64%;opacity:.5;}   /* mobile peak .5 → visible pulse .2<->.5 */
+    .watermark{height:clamp(120px,22vh,200px);top:30%;opacity:.8;}   /* upper area, right above the skyline; mobile peak .8 */
     .wm-track span{color:rgba(255,236,74,1);   /* true neon yellow (less green) */
       filter:drop-shadow(0 0 1px rgba(255,110,110,.85)) drop-shadow(0 0 1px rgba(255,110,110,.7))   /* coral outline hugging each letter */
            drop-shadow(0 0 4px rgba(255,236,90,.5));   /* yellow glow on the letters only */
