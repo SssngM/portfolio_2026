@@ -331,8 +331,8 @@
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
     .coverlines{margin-top:6vh;margin-bottom:4vh;}   /* breathing room between name and the list */
     .folio{left:7vw;bottom:22px;}   /* align P.01 — COVER with the other left-edge text; keep mobile position */
-    .title{top:75%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}   /* below the skyline */
-    #skyline{top:10%;bottom:30%;height:auto;}   /* lowered 5%; black below for the title */
+    .title{top:56vh;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}   /* fixed gap below the skyline baseline (~47.5vh) → never overlaps */
+    #skyline{top:9vh;height:50vh;bottom:auto;}   /* fixed height → baseline at a predictable ~47.5vh on every phone */
     .spotlight{display:none;}   /* no mouse on mobile → drop the cursor spotlight */
     .watermark{height:clamp(120px,22vh,200px);top:30%;opacity:.8;}   /* upper area, right above the skyline; mobile peak .8 */
     .wm-track span{color:rgba(255,236,74,1);   /* true neon yellow (less green) */
