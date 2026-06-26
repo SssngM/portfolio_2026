@@ -347,7 +347,9 @@
     .card.mini .cap .rl{white-space:normal;}   /* wrap instead of overflowing the narrow column */
     .card:not(.mini) .thumb::after{display:none;}   /* no hover overlay on touch */
     .card:not(.mini) .thumb::before{top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
-      font-size:8.5px;font-weight:400;letter-spacing:.1em;color:#6B7270;text-shadow:none;}
+      font-size:8.5px;font-weight:400;letter-spacing:.1em;color:var(--coral);text-shadow:none;}
+    .card.c02 .thumb::before{display:block!important;content:"Visit Site";top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
+      font-size:8.5px;font-weight:400;letter-spacing:.1em;color:var(--coral);text-shadow:none;}   /* Qovai → live site label on mobile */
     .c04-group{grid-column:auto;width:100%;gap:4vw;grid-template-columns:repeat(2,1fr);}   /* 2 per line, 2 lines */
     .mag-vert{display:block;position:static;right:auto;top:auto;bottom:auto;writing-mode:horizontal-tb;
       transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
