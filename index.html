@@ -205,15 +205,14 @@
   .card.c02{grid-column:12 / 22;grid-row:1;}
   .mag-text{grid-column:2 / 12;grid-row:2;align-self:start;}
   .card.c03{grid-column:12 / 22;grid-row:2;}
-  .c04-group{grid-column:2 / 22;grid-row:3;display:grid;grid-template-columns:repeat(3,1fr);gap:1.9vw;min-height:0;}
+  .c04-group{grid-column:2 / 22;grid-row:3;display:grid;grid-template-columns:repeat(4,1fr);gap:1.6vw;min-height:0;}
   .card.mini{min-height:0;min-width:0;}
   .card.mini .cap{min-height:3.3em;align-content:start;}   /* constant caption height → equal thumbs */
   .card.mini .cap .nm{font-size:clamp(13px,1.25vw,19px);}
   .card.mini .cap .rl{font-size:clamp(8px,.65vw,11px);white-space:nowrap;}
-  .card.mini .thumb-no{display:none;}   /* no 04-06 numbers on Playground minis */
-  .card.mini .thumb{cursor:default;border-radius:12px;}   /* equal-height thumbnails (square on mobile only) */
-  .card.mini:hover .thumb{transform:none;}
-  .card.mini:hover .thumb::after{display:none;}   /* non-interactive placeholders */
+  .card.mini .thumb-no{display:none;}   /* no numbers on Playground minis */
+  .card.mini .thumb{cursor:pointer;border-radius:12px;}   /* equal-height thumbnails (square on mobile only) */
+  .card.mini:hover .thumb::after{display:none;}   /* no text label on minis, just the lift */
 
   /* one cell replaced by full text */
   .mag-text p{font-family:'Space Mono',monospace;font-weight:400;
@@ -341,7 +340,7 @@
     .card:not(.mini) .thumb::after{display:none;}   /* no hover overlay on touch */
     .card:not(.mini) .thumb::before{top:auto;left:auto;bottom:8px;right:11px;transform:none;opacity:1;
       font-size:8.5px;font-weight:400;letter-spacing:.1em;color:#6B7270;text-shadow:none;}
-    .c04-group{grid-column:auto;width:100%;gap:3vw;}   /* 3 thumbs span full width, edges match the cards above */
+    .c04-group{grid-column:auto;width:100%;gap:4vw;grid-template-columns:repeat(2,1fr);}   /* 2 per line, 2 lines */
     .mag-vert{display:block;position:static;right:auto;top:auto;bottom:auto;writing-mode:horizontal-tb;
       transform:none;text-align:left;margin-top:6vh;letter-spacing:.34em;opacity:.6;}
     .mag-vert b{display:inline;}
@@ -450,17 +449,21 @@
 
         <!-- ROW 3 : three small projects (thumbnail-only) -->
         <div class="c04-group">
-          <div class="card mini" data-pdf="" data-img="moorcolor-thumb.jpg" data-name="MOORCOLOR" data-shape="play">
+          <div class="card mini" data-pdf="" data-site="https://www.instagram.com/p/DAZ91cspFkv/" data-img="moorcolor-thumb.jpg" data-name="MOORCOLOR" data-shape="play">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">04</span></div>
             <div class="cap"><span class="nm">Moorcolor</span><span class="rl">BRAND DESIGN</span></div>
           </div>
-          <div class="card mini" data-pdf="" data-img="tgs-thumb.jpg" data-name="GROUP5" data-shape="habble">
+          <div class="card mini" data-pdf="group5.pdf" data-img="group5-thumb.jpg" data-name="GROUP5" data-shape="habble">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">05</span></div>
             <div class="cap"><span class="nm">Group5</span><span class="rl">BRAND · UI</span></div>
           </div>
-          <div class="card mini" data-pdf="" data-video="gitlab.mp4" data-name="GITLAB" data-shape="bench">
+          <div class="card mini" data-pdf="" data-site="https://design.gitlab.com/" data-video="gitlab.mp4" data-name="GITLAB" data-shape="bench">
             <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">06</span></div>
-            <div class="cap"><span class="nm">GitLab</span><span class="rl">DESIGN SYSTEMS</span></div>
+            <div class="cap"><span class="nm">GitLab</span><span class="rl">Design System</span></div>
+          </div>
+          <div class="card mini" data-pdf="" data-site="https://your-sweets.netlify.app/" data-img="sweet-store-thumb.jpg" data-name="SWEET STORE" data-shape="play">
+            <div class="thumb"><svg class="thumb-svg" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet"></svg><span class="thumb-no">07</span></div>
+            <div class="cap"><span class="nm">Sweet Store</span><span class="rl">UX Engineer</span></div>
           </div>
         </div>
       </div>
@@ -657,15 +660,13 @@ document.querySelectorAll('.card').forEach(card=>{
   card.addEventListener('drop',e=>{e.preventDefault();card.classList.remove('drop-hot');
     for(const f of e.dataTransfer.files){ if(f.type.startsWith('image/'))setCoverFile(f); else if(f.type==='application/pdf')setPdf(f); }});
 
-  // click the THUMBNAIL → open the live site (data-site) or the case-study route
-  if(!card.classList.contains('mini')){
-    thumb.style.cursor='pointer';
-    thumb.addEventListener('click',e=>{e.preventDefault();
-      if(document.body.classList.contains('edit')) return;
-      if(card.dataset.site){ window.open(card.dataset.site,'_blank','noopener'); return; }
-      if(routeMap[routeKey]) location.hash='case/'+routeKey;
-    });
-  }
+  // click the THUMBNAIL → open the live site (data-site) or the case-study route (works for big + mini)
+  thumb.style.cursor='pointer';
+  thumb.addEventListener('click',e=>{e.preventDefault();
+    if(document.body.classList.contains('edit')) return;
+    if(card.dataset.site){ const a=document.createElement('a'); a.href=card.dataset.site; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove(); return; }
+    if(routeMap[routeKey]) location.hash='case/'+routeKey;
+  });
 });
 router();   // open a case study if the page was loaded with a #case/... hash
 let lock=false;
