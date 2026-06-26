@@ -130,7 +130,7 @@
     color:rgba(42,163,145,.85);
     filter:drop-shadow(0 0 1px rgba(255,110,110,.85)) drop-shadow(0 0 1px rgba(255,110,110,.7))   /* coral outline hugging each letter */
            drop-shadow(0 0 5px rgba(42,163,145,.6));   /* tight teal glow on the letters only */
-    animation:wmPulseD 2.4s ease-in-out infinite;}   /* neon pulse; container opacity is the peak */
+    animation:wmPulseD 1.8s ease-in-out infinite;}   /* neon pulse; container opacity is the peak */
   @keyframes wmScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
   @keyframes wmPulse{0%,100%{opacity:.2;}50%{opacity:1;}}
   @keyframes wmPulseD{0%,100%{opacity:.34;}50%{opacity:.72;}}   /* desktop: gentler dip + softer peak */
@@ -325,21 +325,22 @@
     html,body{overflow:visible;height:auto;}
     #deck{position:static;inset:auto;width:100vw;flex-direction:column;transform:none!important;}
     .screen{height:auto;min-height:100vh;flex:0 0 auto;} .spread{flex-direction:column;}   /* release fixed flex size so the section grows instead of clipping */
-    .left,.right{width:100%;} .left{min-height:auto;padding:7vh 7vw 5vh;} .right{height:85vh;}   /* black watermark section (shorter) */
+    .left,.right{width:100%;} .left{min-height:auto;padding:7vh 7vw 5vh;} .right{height:70vh;}   /* less empty black before Selected Works */
     .masthead-name{writing-mode:horizontal-tb;text-orientation:mixed;transform:none;align-self:auto;
       margin-left:0;font-size:clamp(44px,15vw,86px);line-height:.92;}
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
     .coverlines{margin-top:6vh;margin-bottom:4vh;}   /* breathing room between name and the list */
     .folio{left:7vw;bottom:22px;}   /* align P.01 — COVER with the other left-edge text; keep mobile position */
     .title{top:56vh;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}   /* fixed gap below the skyline baseline (~47.5vh) → never overlaps */
-    #skyline{top:9vh;height:50vh;bottom:auto;}   /* fixed height → baseline at a predictable ~47.5vh on every phone */
+    #skyline{top:9vh;height:50vh;bottom:auto;pointer-events:none;touch-action:auto;}   /* fixed height; ignore touch on mobile so the page scrolls (no hover) */
     .spotlight{display:none;}   /* no mouse on mobile → drop the cursor spotlight */
-    .watermark{height:clamp(120px,22vh,200px);top:30%;opacity:.8;}   /* upper area, right above the skyline; mobile peak .8 */
+    .watermark{height:clamp(120px,22vh,200px);top:24vh;opacity:.8;}   /* fixed vh; above the skyline; mobile peak .8 */
     .wm-track span{color:rgba(255,236,74,1);   /* true neon yellow (less green) */
       filter:drop-shadow(0 0 1px rgba(255,110,110,.85)) drop-shadow(0 0 1px rgba(255,110,110,.7))   /* coral outline hugging each letter */
            drop-shadow(0 0 4px rgba(255,236,90,.5));   /* yellow glow on the letters only */
-      animation:wmPulse 2.4s ease-in-out infinite;}   /* soft neon pulse (global ratio) */
+      animation:wmPulse 1.8s ease-in-out infinite;}   /* soft neon pulse (global ratio) */
     /* page 2 stacks into a single readable column */
+    .canvas-wall,.works::before{background-size:600px 600px;}   /* same fixed tiling on both → identical background brightness */
     .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
     .mag{display:flex;flex-direction:column;gap:11vw;}
     .card.mini{min-height:0;} .card.mini .thumb{min-height:0;aspect-ratio:1;}
@@ -354,7 +355,7 @@
     .mag-vert b:nth-child(2)::before{content:" — ";}
     .mag-vert b:nth-child(3)::before{content:" · ";}
     .mag-script{writing-mode:horizontal-tb;transform:none;justify-self:start;align-self:start;
-      font-size:clamp(28px,9vw,48px);margin-top:4vh;margin-bottom:2vh;}
+      font-size:clamp(28px,9vw,48px);margin-top:4vh;margin-bottom:0vh;}
     .mag-text{order:9;}
     .card{min-height:46vh;} .thumb{min-height:32vh;}
     .cap .nm{font-size:clamp(20px,6vw,30px);}
