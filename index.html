@@ -41,11 +41,11 @@
   .masthead-of{font-family:'Playfair Display',serif;font-style:italic;
     font-size:clamp(18px,1.6vw,26px);opacity:.55;margin-bottom:-.12em;margin-left:.05em;animation-delay:.3s;}
   .masthead-name{position:relative;isolation:isolate;
-    font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;color:var(--teal);
+    font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;color:#08eac9;
     writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);align-self:flex-start;
     text-transform:uppercase;font-size:clamp(40px,5.3vw,92px);line-height:1.04;letter-spacing:.01em;
     margin-top:.3em;margin-left:0;
-    -webkit-text-stroke:5px var(--teal);paint-order:stroke fill;}   /* bolder teal, NO black outline */
+    -webkit-text-stroke:5px var(--teal);paint-order:stroke fill;}   /* fill #08eac9, outline = softer teal */
   /* offset colour blob that prints under the main teal — riso/marker overprint */
   .masthead-name::after{content:"SEUNG\AYOO";white-space:pre;
     position:absolute;inset:0;writing-mode:vertical-rl;text-orientation:mixed;
@@ -153,10 +153,10 @@
   .drag-hint{position:absolute;bottom:5.5vh;left:3vw;font-size:11px;letter-spacing:.3em;
     color:rgba(240,231,214,.5);z-index:5;white-space:nowrap;}
   .lets-go{position:absolute;bottom:5vh;right:3vw;z-index:6;background:none;border:0;
-    font-family:'Space Mono',monospace;font-weight:700;color:var(--coral);
+    font-family:'Space Mono',monospace;font-weight:700;color:#08eac9;
     font-size:clamp(14px,1.2vw,18px);letter-spacing:.34em;cursor:pointer;padding:6px 2px;}
   .lets-go::after{content:"";position:absolute;left:0;bottom:0;height:2px;width:0;
-    background:var(--coral);transition:width .3s ease;}
+    background:#08eac9;transition:width .3s ease;}
   .lets-go:hover::after,.lets-go:focus-visible::after{width:100%;}
 
   /* ---- SCREEN 02 — SELECTED WORKS (asymmetric magazine spread) ---- */
@@ -195,9 +195,9 @@
   .mag-script .hand{font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;color:var(--cream);
     text-transform:uppercase;font-size:.8em;letter-spacing:.01em;}
   /* Selected — main teal + offset outline only */
-  .mag-script .sel{position:relative;isolation:isolate;color:var(--teal);line-height:1.5;
+  .mag-script .sel{position:relative;isolation:isolate;color:#08eac9;line-height:1.5;
     font-family:'Baloo 2',sans-serif;font-style:normal;font-weight:800;text-transform:uppercase;
-    -webkit-text-stroke:3.6px var(--teal);paint-order:stroke fill;}
+    -webkit-text-stroke:3.6px #08eac9;paint-order:stroke fill;}
   .mag-script .sel .sel-ol{position:absolute;inset:0;color:transparent;
     -webkit-text-stroke:.8px rgba(9,20,19,.85);paint-order:stroke fill;
     transform:translate(1px,1px);z-index:2;pointer-events:none;}
@@ -800,13 +800,16 @@ function buildDeco(jx,jy){
 function refresh(){
   const hov=mouse.inside;
   // big coherent traveling waves along x (two rubber bands undulating)
-  const ampB = 9, ampR = 10;
+  const mob = (typeof matchMedia==='function' && matchMedia('(max-width:860px)').matches) ? 1.7 : 1;   // bigger drift on mobile
+  const ampB = 9*mob, ampR = 10*mob;
   const blk=P.map((p)=>({bx:p.bx,by:p.by,
     ox:p.ox + Math.sin(p.bx*0.012 + T*1.4)*2.0,
-    oy:p.oy + Math.sin(p.bx*0.010 - T*1.6)*ampB + Math.sin(p.bx*0.021 + T*0.9)*3.2}));
+    oy:p.oy + Math.sin(p.bx*0.010 - T*1.6)*ampB + Math.sin(p.bx*0.021 + T*0.9)*(3.2*mob)}));
+  // on mobile the red line runs at different temporal frequencies → drifts independently of the cream line
+  const rF1 = mob>1 ? 1.95 : 1.4, rF2 = mob>1 ? 2.15 : 1.6, rF3 = mob>1 ? 1.55 : 1.05;
   const red=P.map((p)=>({bx:p.bx,by:p.by,
-    ox:p.ox + Math.sin(p.bx*0.012 + T*1.4 + 0.6)*2.2 + 2,
-    oy:p.oy + Math.sin(p.bx*0.010 - T*1.6 + 0.8)*ampR + Math.sin(p.bx*0.021 + T*1.05)*3.8 - 6}));
+    ox:p.ox + Math.sin(p.bx*0.012 + T*rF1 + 0.6)*2.2 + 2,
+    oy:p.oy + Math.sin(p.bx*0.010 - T*rF2 + 0.8)*ampR + Math.sin(p.bx*0.021 + T*rF3)*(3.8*mob) - 6}));
   if(hov){
     // HOVER: the two lines swell into a big wave near the cursor (no jitter)
     for(let i=0;i<P.length;i++){
@@ -821,7 +824,7 @@ function refresh(){
   blkLine.setAttribute('d',smoothPath(blk,0,0));
   redLine.setAttribute('d',smoothPath(red,0,0));
   // decoration rides the same gentle motion
-  decoLine.setAttribute('d',buildDeco(Math.cos(T*1.1)*1.6, Math.sin(T*1.0)*3.0));
+  decoLine.setAttribute('d',buildDeco(Math.cos(T*1.1)*1.6*mob, Math.sin(T*1.0)*3.0*mob));
 }
 refresh();
 
