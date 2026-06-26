@@ -118,7 +118,7 @@
   #deck.p2 .title{transform:translateX(-50%) scale(3.6);opacity:0;}
   /* big background marquee — words drifting sideways, halftone dots, very faint */
   .watermark{position:absolute;left:0;right:0;top:44%;transform:translateY(-50%);
-    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.25;
+    width:100%;height:clamp(110px,22vh,220px);overflow:hidden;z-index:1;pointer-events:none;opacity:.34;
     display:flex;align-items:center;
     transition:transform .85s cubic-bezier(.55,0,.2,1),opacity .7s ease;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
@@ -127,11 +127,13 @@
     animation:wmScroll 150s linear infinite;}
   .wm-track span{font-family:'Workbench',monospace;font-weight:400;text-transform:uppercase;
     font-size:clamp(58px,15vh,140px);line-height:1;letter-spacing:.12em;padding-right:.16em;
-    color:rgba(42,163,145,.4);
-    filter:drop-shadow(0 -1.5px 0 rgba(246,255,120,.3))
-           drop-shadow(-1px 0 0 rgba(255,0,90,.16)) drop-shadow(1px 0 0 rgba(0,190,255,.16))
-           drop-shadow(0 0 7px rgba(42,163,145,.5)) drop-shadow(0 0 18px rgba(42,163,145,.34));}
+    color:rgba(42,163,145,.85);
+    filter:drop-shadow(0 0 1px rgba(255,110,110,.85)) drop-shadow(0 0 1px rgba(255,110,110,.7))   /* coral outline hugging each letter */
+           drop-shadow(0 0 5px rgba(42,163,145,.6));   /* tight teal glow on the letters only */
+    animation:wmPulseD 2.4s ease-in-out infinite;}   /* neon pulse; container opacity is the peak */
   @keyframes wmScroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  @keyframes wmPulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+  @keyframes wmPulseD{0%,100%{opacity:.34;}50%{opacity:.72;}}   /* desktop: gentler dip + softer peak */
   .watermark text{font-family:'Oswald',sans-serif;font-weight:700;text-transform:uppercase;}
   /* same exit as the title: swell from centre + dissolve, already gone by the first scroll */
   #deck.half .watermark{transform:translateY(-50%) scale(2.6);opacity:0;}
@@ -329,13 +331,14 @@
     .masthead-name::after,.masthead-name .nm-ol{writing-mode:horizontal-tb;}
     .coverlines{margin-top:6vh;margin-bottom:4vh;}   /* breathing room between name and the list */
     .folio{left:7vw;bottom:22px;}   /* align P.01 — COVER with the other left-edge text; keep mobile position */
-    .title{top:50%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
+    .title{top:64%;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}
     #skyline{top:38%;bottom:0;height:auto;}   /* keep buildings in the lower area, clear of the title */
     .spotlight{display:none;}   /* no mouse on mobile → drop the cursor spotlight */
-    .watermark{height:clamp(90px,16vh,160px);top:50%;opacity:.36;}
-    .wm-track span{color:rgba(218,255,78,.95);   /* crisp neon-yellow glyph */
-      filter:drop-shadow(0 0 1px rgba(255,110,110,.9)) drop-shadow(0 0 1px rgba(255,110,110,.75))   /* coral outline hugging each letter */
-           drop-shadow(0 0 3.5px rgba(220,255,90,.6));}   /* one tight glow on the letters only */
+    .watermark{height:clamp(90px,16vh,160px);top:64%;opacity:.5;}   /* mobile peak .5 → visible pulse .2<->.5 */
+    .wm-track span{color:rgba(255,236,74,1);   /* true neon yellow (less green) */
+      filter:drop-shadow(0 0 1px rgba(255,110,110,.85)) drop-shadow(0 0 1px rgba(255,110,110,.7))   /* coral outline hugging each letter */
+           drop-shadow(0 0 4px rgba(255,236,90,.5));   /* yellow glow on the letters only */
+      animation:wmPulse 2.4s ease-in-out infinite;}   /* soft neon pulse (global ratio) */
     /* page 2 stacks into a single readable column */
     .works{padding:7vh 7vw;height:auto;overflow:visible;} .p2left{display:none;} .back{display:none;}
     .mag{display:flex;flex-direction:column;gap:11vw;}
@@ -762,8 +765,8 @@ function mkLine(color,w,op,dash){
    thick black charcoal (main, sprite walks this) + thin red that wanders
    slightly above/below — like a sketch traced twice by hand. */
 const redLine =mkLine('#D95122',2,'.9');      // grenadine offset
-const blkLine =mkLine('#F0E7D6',4,'.5');      // dim cream main (sprite walks)
-const decoLine=mkLine('#F0E7D6',1.4,'.4');    // dim cream: bridge cables + pyramid rungs
+const blkLine =mkLine('#F0E7D6',4.6,'.72');    // cream main — strengthened (sprite walks)
+const decoLine=mkLine('#F0E7D6',1.7,'.55');    // cream: bridge cables + pyramid rungs — strengthened
 const mainLine=blkLine;
 const redPh = P.map((_,i)=>({x:Math.random()*6.28+i*0.3, y:Math.random()*6.28+i*0.5}));
 const blkPh = P.map((_,i)=>({x:Math.random()*6.28+i*0.7, y:Math.random()*6.28+i*0.2}));
