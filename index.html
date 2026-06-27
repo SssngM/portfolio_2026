@@ -334,10 +334,10 @@
     .title{top:56vh;transform:translate(-50%,-50%);font-size:clamp(13px,3.6vw,18px);letter-spacing:.3em;}   /* fixed gap below the skyline baseline (~47.5vh) → never overlaps */
     #skyline{top:9vh;height:50vh;bottom:auto;pointer-events:none;touch-action:auto;}   /* fixed height; ignore touch on mobile so the page scrolls (no hover) */
     .spotlight{display:none;}   /* no mouse on mobile → drop the cursor spotlight */
-    .watermark{height:clamp(120px,22vh,200px);top:24vh;opacity:.8;}   /* fixed vh; above the skyline; mobile peak .8 */
-    .wm-track span{color:rgba(255,236,74,1);   /* true neon yellow (less green) */
-      filter:drop-shadow(0 0 1px rgba(255,110,110,.85)) drop-shadow(0 0 1px rgba(255,110,110,.7))   /* coral outline hugging each letter */
-           drop-shadow(0 0 4px rgba(255,236,90,.5));   /* yellow glow on the letters only */
+    .watermark{height:clamp(120px,22vh,200px);top:24vh;opacity:1;}   /* fixed vh; above the skyline; mobile peak 1 */
+    .wm-track span{color:rgb(255,178,178);   /* brighter coral fill */
+      filter:drop-shadow(0 0 1px rgba(42,163,145,.9)) drop-shadow(0 0 1px rgba(42,163,145,.75))   /* teal outline for contrast */
+           drop-shadow(0 0 4px rgba(255,178,178,.5));   /* coral glow on the letters only */
       animation:wmPulse 1.8s ease-in-out infinite;}   /* soft neon pulse (global ratio) */
     /* page 2 stacks into a single readable column */
     .canvas-wall,.works::before{background-size:600px 600px;}   /* same fixed tiling on both → identical background brightness */
