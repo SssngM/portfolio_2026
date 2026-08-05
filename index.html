@@ -569,6 +569,8 @@ const routeMap={};   // key -> {pdf, name}, filled as cards are built
 function showCase(key){
   const r=routeMap[key];
   if(!r||!r.pdf){ hideCase(); return; }
+  // mobile: <embed> PDFs don't render in iOS/Android Safari — send direct-hash loads (e.g. shared links) to the file itself
+  if(matchMedia('(max-width:860px)').matches){ location.href=r.pdf; return; }
   // embed (not iframe) → no extra history; #navpanes=0 hides the PDF page-thumbnail sidebar
   pdfHost.innerHTML='<embed src="'+r.pdf+'#toolbar=0&navpanes=0&statusbar=0&view=FitH" type="application/pdf">';
   pdfTitle.textContent=r.name||''; pdfView.classList.add('open');
@@ -675,7 +677,14 @@ document.querySelectorAll('.card').forEach(card=>{
   thumb.addEventListener('click',e=>{e.preventDefault();
     if(document.body.classList.contains('edit')) return;
     if(card.dataset.site){ const a=document.createElement('a'); a.href=card.dataset.site; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove(); return; }
-    if(routeMap[routeKey]) location.hash='case/'+routeKey;
+    if(routeMap[routeKey]){
+      // mobile: <embed> PDFs don't render in iOS/Android Safari — open the file directly
+      // instead of the inline viewer, so the native PDF viewer handles scroll/zoom.
+      if(matchMedia('(max-width:860px)').matches && routeMap[routeKey].pdf){
+        const a=document.createElement('a'); a.href=routeMap[routeKey].pdf; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove(); return;
+      }
+      location.hash='case/'+routeKey;
+    }
   });
 });
 router();   // open a case study if the page was loaded with a #case/... hash
