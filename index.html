@@ -291,7 +291,7 @@
   .pdf-back:hover{opacity:1;}
   .pdf-title{font-family:'Playfair Display',serif;font-style:italic;font-size:18px;color:var(--cream);opacity:.7;}
   #pdfHost{flex:1;width:100%;background:#222;}
-  #pdfHost embed{width:100%;height:100%;border:0;}
+  #pdfHost embed,#pdfHost iframe{width:100%;height:100%;border:0;}
 
   /* thumbnail cover image (user-provided) */
   .thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:none;}
@@ -569,10 +569,8 @@ const routeMap={};   // key -> {pdf, name}, filled as cards are built
 function showCase(key){
   const r=routeMap[key];
   if(!r||!r.pdf){ hideCase(); return; }
-  // mobile: <embed> PDFs don't render in iOS/Android Safari — send direct-hash loads (e.g. shared links) to the file itself
-  if(matchMedia('(max-width:860px)').matches){ location.href=r.pdf; return; }
-  // embed (not iframe) → no extra history; #navpanes=0 hides the PDF page-thumbnail sidebar
-  pdfHost.innerHTML='<embed src="'+r.pdf+'#toolbar=0&navpanes=0&statusbar=0&view=FitH" type="application/pdf">';
+  // iframe (not embed) → iOS/Android Safari render PDFs in an iframe but not via <embed>/<object>
+  pdfHost.innerHTML='<iframe src="'+r.pdf+'#toolbar=0&navpanes=0&statusbar=0&view=FitH"></iframe>';
   pdfTitle.textContent=r.name||''; pdfView.classList.add('open');
 }
 function hideCase(){ pdfView.classList.remove('open'); setTimeout(()=>{pdfHost.innerHTML='';},350); }
@@ -677,14 +675,7 @@ document.querySelectorAll('.card').forEach(card=>{
   thumb.addEventListener('click',e=>{e.preventDefault();
     if(document.body.classList.contains('edit')) return;
     if(card.dataset.site){ const a=document.createElement('a'); a.href=card.dataset.site; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove(); return; }
-    if(routeMap[routeKey]){
-      // mobile: <embed> PDFs don't render in iOS/Android Safari — open the file directly
-      // instead of the inline viewer, so the native PDF viewer handles scroll/zoom.
-      if(matchMedia('(max-width:860px)').matches && routeMap[routeKey].pdf){
-        const a=document.createElement('a'); a.href=routeMap[routeKey].pdf; a.target='_blank'; a.rel='noopener noreferrer'; document.body.appendChild(a); a.click(); a.remove(); return;
-      }
-      location.hash='case/'+routeKey;
-    }
+    if(routeMap[routeKey]) location.hash='case/'+routeKey;
   });
 });
 router();   // open a case study if the page was loaded with a #case/... hash
