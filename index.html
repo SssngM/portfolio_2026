@@ -295,8 +295,18 @@
   .pdf-title{font-family:'Playfair Display',serif;font-style:italic;
     font-size:clamp(14px,2.4vw,18px);color:var(--cream);opacity:.7;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
-  #pdfHost{flex:1;min-height:0;width:100%;background:#222;}
+  #pdfHost{flex:1;min-height:0;width:100%;background:#222;
+    overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
   #pdfHost embed,#pdfHost iframe{display:block;width:100%;height:100%;border:0;}
+  /* canvas-rendered pages: always sized to the viewport width, so a tall
+     case-study page fits the phone instead of opening zoomed past the edge */
+  .pdf-pages{display:flex;flex-direction:column;align-items:center;
+    gap:10px;padding-bottom:env(safe-area-inset-bottom);}
+  .pdf-page{position:relative;max-width:100%;}
+  .pdf-tile{position:absolute;left:0;}
+  .pdf-tile canvas{display:block;width:100%;height:100%;}
+  .pdf-msg{color:var(--cream);font-family:'Space Mono',monospace;
+    font-size:11px;letter-spacing:.24em;opacity:.65;padding:28px 20px;text-align:center;}
 
   /* thumbnail cover image (user-provided) */
   .thumb-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:none;}
@@ -571,14 +581,111 @@ backBtn.addEventListener('click',toP1);
 const pdfView=document.getElementById('pdfView'),pdfHost=document.getElementById('pdfHost'),
       pdfBack=document.getElementById('pdfBack'),pdfTitle=document.getElementById('pdfTitle');
 const routeMap={};   // key -> {pdf, name}, filled as cards are built
+/* ---- responsive PDF rendering -------------------------------------------
+   The case studies are single very tall pages (bench: 1012 x 18667px). The
+   browser's own PDF viewer draws them at native width, so on a phone they
+   open ~2.6x wider than the screen — and iOS Safari ignores #view=FitH in an
+   iframe. So render to canvas at the container width instead: fits any
+   viewport, scrolls normally. Tall pages are sliced into tiles to stay under
+   the mobile canvas size limit (iOS caps a canvas around 4096px a side). */
+const PDFJS_BASE='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+let pdfjsReady=null;
+function loadPdfJs(){
+  if(pdfjsReady) return pdfjsReady;
+  pdfjsReady=new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src=PDFJS_BASE+'pdf.min.js';
+    s.onload=()=>{ const L=window.pdfjsLib;
+      if(!L){ rej(new Error('pdfjsLib missing')); return; }
+      L.GlobalWorkerOptions.workerSrc=PDFJS_BASE+'pdf.worker.min.js'; res(L); };
+    s.onerror=()=>rej(new Error('pdf.js failed to load'));
+    document.head.appendChild(s);
+  });
+  return pdfjsReady;
+}
+const TILE_H=1400, DPR_CAP=2, MAX_PAGE_W=1200;   // tile*dpr stays well under the 4096px canvas cap
+let renderToken=0, shown={url:null,width:0}, pdfIO=null;
+
+/* tiles paint only when near the viewport and release their canvas when
+   scrolled away — a full 18000px page held in memory at once is ~200MB and
+   will take the tab down on a phone */
+function paintTile(tile){
+  if(tile._painted||tile._busy) return;
+  tile._busy=true;
+  const cv=document.createElement('canvas');
+  cv.width=Math.round(tile._vp.width*tile._dpr);
+  cv.height=Math.round(tile._h*tile._dpr);
+  tile.appendChild(cv);
+  const task=tile._page.render({canvasContext:cv.getContext('2d'),viewport:tile._vp,
+    transform:[tile._dpr,0,0,tile._dpr,0,-tile._y*tile._dpr]});
+  tile._task=task;
+  task.promise.then(()=>{ tile._painted=true; tile._busy=false; tile._task=null; },
+                   ()=>{ tile._busy=false; tile._task=null; cv.remove(); });
+}
+function freeTile(tile){
+  if(tile._task){ try{ tile._task.cancel(); }catch(e){} tile._task=null; }
+  tile._busy=false; tile._painted=false;
+  const cv=tile.querySelector('canvas');
+  if(cv){ cv.width=0; cv.height=0; cv.remove(); }   // 0x0 first so the buffer is released
+}
+
+async function renderPdfInto(url,host){
+  const token=++renderToken;
+  host.innerHTML='<div class="pdf-msg">LOADING…</div>';
+  const lib=await loadPdfJs();
+  const doc=await lib.getDocument(url).promise;
+  if(token!==renderToken) return;                  // closed / switched while loading
+  const cw=Math.max(1,host.clientWidth);
+  shown={url:url,width:cw};
+  const wrap=document.createElement('div'); wrap.className='pdf-pages';
+  host.innerHTML=''; host.appendChild(wrap);
+  const dpr=Math.min(window.devicePixelRatio||1,DPR_CAP);
+  if(pdfIO) pdfIO.disconnect();
+  pdfIO=new IntersectionObserver(es=>{
+    for(const e of es){ e.isIntersecting?paintTile(e.target):freeTile(e.target); }
+  },{root:host,rootMargin:'900px 0px'});
+  for(let n=1;n<=doc.numPages;n++){
+    const page=await doc.getPage(n);
+    if(token!==renderToken) return;
+    const base=page.getViewport({scale:1});
+    const vp=page.getViewport({scale:Math.min(cw,MAX_PAGE_W)/base.width});   // fit the viewport width
+    const pg=document.createElement('div'); pg.className='pdf-page';
+    pg.style.width=vp.width+'px'; pg.style.height=vp.height+'px';
+    wrap.appendChild(pg);
+    for(let y=0;y<vp.height;y+=TILE_H){             // slice tall pages vertically
+      const tile=document.createElement('div'); tile.className='pdf-tile';
+      tile.style.top=y+'px'; tile.style.width=vp.width+'px';
+      tile.style.height=Math.min(TILE_H,vp.height-y)+'px';
+      tile._page=page; tile._vp=vp; tile._y=y; tile._h=Math.min(TILE_H,vp.height-y); tile._dpr=dpr;
+      pg.appendChild(tile);
+      pdfIO.observe(tile);
+    }
+  }
+}
 function showCase(key){
   const r=routeMap[key];
   if(!r||!r.pdf){ hideCase(); return; }
-  // iframe (not embed) → iOS/Android Safari render PDFs in an iframe but not via <embed>/<object>
-  pdfHost.innerHTML='<iframe src="'+r.pdf+'#toolbar=0&navpanes=0&statusbar=0&view=FitH"></iframe>';
   pdfTitle.textContent=r.name||''; pdfView.classList.add('open');
+  renderPdfInto(r.pdf,pdfHost).catch(()=>{         // CDN blocked/offline → browser viewer
+    shown={url:null,width:0};
+    pdfHost.innerHTML='<iframe src="'+r.pdf+'#toolbar=0&navpanes=0&statusbar=0&view=FitH"></iframe>';
+  });
 }
-function hideCase(){ pdfView.classList.remove('open'); setTimeout(()=>{pdfHost.innerHTML='';},350); }
+function hideCase(){ renderToken++; shown={url:null,width:0};
+  if(pdfIO){ pdfIO.disconnect(); pdfIO=null; }
+  pdfView.classList.remove('open');
+  setTimeout(()=>{ if(!pdfView.classList.contains('open')){
+    pdfHost.querySelectorAll('.pdf-tile').forEach(freeTile); pdfHost.innerHTML=''; } },350); }
+/* re-fit on rotate / window resize */
+let pdfRsT=null;
+addEventListener('resize',()=>{
+  if(!shown.url||!pdfView.classList.contains('open')) return;
+  clearTimeout(pdfRsT);
+  pdfRsT=setTimeout(()=>{
+    if(!shown.url||Math.abs(pdfHost.clientWidth-shown.width)<24) return;
+    renderPdfInto(shown.url,pdfHost).catch(()=>{});
+  },260);
+});
 function router(){
   const h=location.hash;                    // e.g. #case/bench
   const m=h.match(/^#case\/(.+)$/);
@@ -685,12 +792,16 @@ document.querySelectorAll('.card').forEach(card=>{
 });
 router();   // open a case study if the page was loaded with a #case/... hash
 let lock=false;
-addEventListener('wheel',e=>{if(innerWidth<=860)return;if(lock)return;
+/* the case-study viewer scrolls its own canvas pages now (an iframe used to
+   swallow these), so ignore deck navigation while it's open */
+const caseOpen=()=>pdfView.classList.contains('open');
+addEventListener('wheel',e=>{if(innerWidth<=860)return;if(caseOpen())return;if(lock)return;
   const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
   if(Math.abs(d)<20)return;
   lock=true;setTimeout(()=>lock=false,700);
   if(d>0)goState(2);else goState(0);},{passive:true});
-addEventListener('keydown',e=>{if(e.key==='ArrowRight')goState(2);if(e.key==='ArrowLeft')goState(0);});
+addEventListener('keydown',e=>{if(caseOpen())return;
+  if(e.key==='ArrowRight')goState(2);if(e.key==='ArrowLeft')goState(0);});
 
 /* =========================================================
    HAND-SKETCHED SF SKYLINE — multi-stroke, idle tremble,
