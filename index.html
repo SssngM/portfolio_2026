@@ -300,6 +300,10 @@
   #pdfHost embed,#pdfHost iframe{display:block;width:100%;height:100%;border:0;}
   /* canvas-rendered pages: always sized to the viewport width, so a tall
      case-study page fits the phone instead of opening zoomed past the edge */
+  /* image case studies: edge to edge, no side gutters, slices butt together
+     so the document reads as one continuous page */
+  .case-doc{display:block;width:100%;padding-bottom:env(safe-area-inset-bottom);}
+  .case-doc img{display:block;width:100%;height:auto;margin:0;border:0;}
   .pdf-pages{display:flex;flex-direction:column;align-items:center;
     gap:10px;padding-bottom:env(safe-area-inset-bottom);}
   .pdf-page{position:relative;max-width:100%;}
@@ -603,12 +607,42 @@ function loadPdfJs(){
   });
   return pdfjsReady;
 }
-/* Warm the renderer while the visitor is still on the cover. Opening a case
-   study used to be strictly serial — tap, fetch the 73KB library, and only
-   then start the multi-MB PDF — which cost ~600ms before the download even
-   began. Fetching both ahead of time keeps full resolution and just moves
-   the waiting off the critical path. */
-(window.requestIdleCallback||(f=>setTimeout(f,1500)))(()=>{ loadPdfJs().catch(()=>{}); });
+/* ---- image case studies -------------------------------------------------
+   The PDFs turned out to be nothing but stacked JPEG strips — no text, no
+   vectors — so serving them as PDFs meant every phone downloaded a 3.8MB
+   desktop-resolution file and a PDF engine to draw it. The same pixels as
+   WebP, offered at several widths, let each device take only what its screen
+   can actually resolve. Slices are contiguous and sum to the full page, so
+   stacking them reproduces the original exactly.
+   Regenerate with tools/build-case-images.py if the PDFs change. */
+const CASES={
+  bench :{w:1777,widths:[900,1200,1600,1777],h:[7975,5988,7996,7941,2868]},
+  habble:{w:1500,widths:[900,1200,1500],      h:[14587]},
+  group5:{w:1210,widths:[900,1200,1210],      h:[8000]}
+};
+const casePart=(key,i,w)=>'case/'+key+'-'+String(i+1).padStart(2,'0')+'-'+w+'.webp';
+function caseDocHTML(key,name){
+  const c=CASES[key];
+  return '<div class="case-doc">'+c.h.map((h,i)=>{
+    const srcset=c.widths.map(w=>casePart(key,i,w)+' '+w+'w').join(', ');
+    // width/height reserve the exact space, so nothing jumps as slices arrive
+    return '<img src="'+casePart(key,i,c.widths[c.widths.length-1])+'" srcset="'+srcset+'"'+
+      ' sizes="100vw" width="'+c.w+'" height="'+h+'" decoding="async"'+
+      (i===0?' fetchpriority="high"':' loading="lazy"')+
+      ' alt="'+(name||key)+' case study, part '+(i+1)+' of '+c.h.length+'">';
+  }).join('')+'</div>';
+}
+/* warm only the first slice — enough for the viewer to paint immediately */
+const caseWarmed=new Set();
+function prefetchCase(key,force){
+  const c=CASES[key];
+  if(!c||caseWarmed.has(key)||(!force&&!netOK())) return;
+  caseWarmed.add(key);
+  const im=new Image();                       // detached: still fills the HTTP cache
+  im.sizes='100vw';
+  im.srcset=c.widths.map(w=>casePart(key,0,w)+' '+w+'w').join(', ');
+  im.src=casePart(key,0,c.widths[0]);
+}
 /* don't spend someone's cellular allowance on a file they may never open */
 const netOK=()=>{ const c=navigator.connection||{};
   return !c.saveData && !/(^|-)(2g|slow)/.test(c.effectiveType||''); };
@@ -693,6 +727,11 @@ function showCase(key){
   const r=routeMap[key];
   if(!r||!r.pdf){ hideCase(); return; }
   pdfTitle.textContent=r.name||''; pdfView.classList.add('open');
+  if(CASES[key]){                                  // images: no engine, no wait
+    renderToken++; shown={url:null,width:0};
+    pdfHost.scrollTop=0; pdfHost.innerHTML=caseDocHTML(key,r.name);
+    return;
+  }
   renderPdfInto(r.pdf,pdfHost).catch(()=>{         // CDN blocked/offline → browser viewer
     shown={url:null,width:0};
     pdfHost.innerHTML='<iframe src="'+r.pdf+'#toolbar=0&navpanes=0&statusbar=0&view=FitH"></iframe>';
@@ -813,11 +852,12 @@ document.querySelectorAll('.card').forEach(card=>{
      cursor is over the cover) the intent is clear, so the file is already in
      flight by the time the viewer opens */
   if(pdfURL){
-    const warm=()=>prefetchPdf(pdfURL,true);
+    const hasImgs=!!CASES[routeKey];
+    const warm=()=>hasImgs?prefetchCase(routeKey,true):prefetchPdf(pdfURL,true);
     thumb.addEventListener('pointerdown',warm,{once:true,passive:true});
     thumb.addEventListener('mouseenter',warm,{once:true,passive:true});
     new IntersectionObserver((es,o)=>{        // scrolled the cover into view → fetch quietly
-      if(es.some(e=>e.isIntersecting)){ prefetchPdf(pdfURL); o.disconnect(); }
+      if(es.some(e=>e.isIntersecting)){ hasImgs?prefetchCase(routeKey):prefetchPdf(pdfURL); o.disconnect(); }
     },{rootMargin:'200px'}).observe(thumb);
   }
 
