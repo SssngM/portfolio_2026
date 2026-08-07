@@ -612,13 +612,14 @@ function loadPdfJs(){
 /* don't spend someone's cellular allowance on a file they may never open */
 const netOK=()=>{ const c=navigator.connection||{};
   return !c.saveData && !/(^|-)(2g|slow)/.test(c.effectiveType||''); };
-const prefetched=new Set();
+/* fetch() rather than <link rel=prefetch> — Safari doesn't honour prefetch,
+   so the link version was a no-op on exactly the device this is for. Keeping
+   the bytes means the viewer never issues a second request. */
+const pdfBuf=new Map();                            // url -> Promise<ArrayBuffer|null>
 function prefetchPdf(url,force){
-  if(!url||prefetched.has(url)||(!force&&!netOK())) return;
-  prefetched.add(url);
-  const l=document.createElement('link');
-  l.rel='prefetch'; l.as='fetch'; l.href=url;      // low priority: won't fight the page for bandwidth
-  document.head.appendChild(l);
+  if(!url||pdfBuf.has(url)||(!force&&!netOK())) return;
+  pdfBuf.set(url, fetch(url,{credentials:'same-origin'})
+    .then(r=>r.ok?r.arrayBuffer():null).catch(()=>null));
 }
 const TILE_H=1400, DPR_CAP=2, MAX_PAGE_W=1200;   // tile*dpr stays well under the 4096px canvas cap
 let renderToken=0, shown={url:null,width:0}, pdfIO=null;
@@ -650,7 +651,11 @@ async function renderPdfInto(url,host){
   const token=++renderToken;
   host.innerHTML='<div class="pdf-msg">LOADING…</div>';
   const lib=await loadPdfJs();
-  const task=lib.getDocument(url);
+  prefetchPdf(url,true);                             // no-op if already in flight
+  const buf=await pdfBuf.get(url);
+  if(token!==renderToken) return;
+  // slice() so pdf.js detaching the buffer can't break a later re-render on rotate
+  const task=lib.getDocument(buf?{data:buf.slice(0)}:url);
   task.onProgress=({loaded,total})=>{                // a big file feels broken without a number
     const el=host.querySelector('.pdf-msg');
     if(el&&total) el.textContent='LOADING '+Math.min(99,Math.round(loaded/total*100))+'%';
